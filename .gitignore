@@ -16,7 +16,6 @@ tally-desktop/src-tauri/backend/
 # PyInstaller
 build/
 dist/
-*.spec
 
 # IDE
 .vscode/
