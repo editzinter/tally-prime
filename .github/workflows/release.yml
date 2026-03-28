@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [windows-latest, macos-latest, ubuntu-22.04]
+        platform: [ubuntu-22.04]
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -21,7 +21,7 @@ jobs:
         if: matrix.platform == 'ubuntu-22.04'
         run: |
           sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libfuse2
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -58,10 +58,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+          APPIMAGE_EXTRACT_AND_RUN: 1
+          NO_STRIP: true
         with:
           projectPath: "./tally-desktop"
-          tagName: ${{ github.ref_name }}
-          releaseName: 'App ${{ github.ref_name }}'
+          tagName: "v0.2.0"
+          releaseName: 'App v0.2.0'
           releaseBody: 'See the attached assets to download this update.'
           releaseDraft: false
           prerelease: false
