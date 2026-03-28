@@ -1,5 +1,20 @@
 import os
 import sys
+import datetime
+
+# PyInstaller with console=False strips sys.stdout. We must redirect it to avoid crashes!
+log_dir = os.path.expanduser('~/.tally-prime')
+os.makedirs(log_dir, exist_ok=True)
+log_path = os.path.join(log_dir, 'server.log')
+
+log_file = open(log_path, 'a', encoding='utf-8')
+log_file.write(f"\n--- Server Started at {datetime.datetime.now()} ---\n")
+
+if sys.stdout is None:
+    sys.stdout = log_file
+if sys.stderr is None:
+    sys.stderr = log_file
+
 import django
 from django.core.management import call_command
 
