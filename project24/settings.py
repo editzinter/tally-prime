@@ -16,6 +16,10 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Persistent Database Directory
+TALLY_DATA_DIR = Path(os.path.expanduser('~/.tally-prime'))
+TALLY_DATA_DIR.mkdir(parents=True, exist_ok=True)
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -78,7 +82,7 @@ WSGI_APPLICATION = 'project24.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': TALLY_DATA_DIR / 'db.sqlite3',
     }
 }
 
@@ -128,6 +132,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR,"static")]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(TALLY_DATA_DIR, 'media')
 
-DATA_DIR = os.path.join(BASE_DIR, 'tally_data')
+DATA_DIR = os.path.join(TALLY_DATA_DIR, 'tally_data')

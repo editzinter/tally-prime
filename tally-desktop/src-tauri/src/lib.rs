@@ -1,4 +1,6 @@
 use std::process::Command;
+#[cfg(target_os = "windows")]
+use std::os::windows::process::CommandExt;
 use std::sync::Mutex;
 use std::time::Duration;
 use tauri::Manager;
@@ -26,9 +28,14 @@ pub fn run() {
             let resource_path = app.path().resolve("backend/tally-backend", tauri::path::BaseDirectory::Resource).unwrap();
             
             println!("Starting backend at: {:?}", resource_path);
-            let child = Command::new(&resource_path)
-                .spawn()
-                .expect("Failed to start backend");
+            
+            #[cfg(target_os = "windows")]
+            let mut cmd = Command::new(&resource_path);
+            #[cfg(target_os = "windows")]
+            let child = cmd.creation_flags(0x08000000).spawn().expect("Failed to start backend");
+            
+            #[cfg(not(target_os = "windows"))]
+            let child = Command::new(&resource_path).spawn().expect("Failed to start backend");
                 
             app.manage(BackendProcess(Mutex::new(Some(child))));
             

@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ubuntu-22.04]
+        platform: [windows-latest, macos-latest, ubuntu-22.04]
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -62,8 +62,8 @@ jobs:
           NO_STRIP: true
         with:
           projectPath: "./tally-desktop"
-          tagName: "v0.2.0"
-          releaseName: 'App v0.2.0'
+          tagName: ${{ github.ref_name }}
+          releaseName: 'App ${{ github.ref_name }}'
           releaseBody: 'See the attached assets to download this update.'
           releaseDraft: false
           prerelease: false
