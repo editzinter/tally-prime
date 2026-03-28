@@ -283,23 +283,18 @@
                     <div class="form-row">
                         <div class="form-label">State</div><div class="colon">:</div>
                         <div class="form-input-wrap">
-                            <select name="state" class="form-input">
-                                <option value="primary">Not Applicable</option>
-                                <option value="Andhra Pradesh">Andhra Pradesh</option>
-                                <option value="Karnataka">Karnataka</option>
-                                <option value="Maharashtra">Maharashtra</option>
-                                <option value="Tamil Nadu">Tamil Nadu</option>
-                                <!-- truncated for standard UI -->
+                            <select name="state" class="form-input" id="stateSelect">
+                                <!-- Populated dynamically via JS -->
                             </select>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-label">Country</div><div class="colon">:</div>
                         <div class="form-input-wrap">
-                            <select name="country" class="form-input">
-                                <option value="India">India</option>
-                                <option value="Countryt">Not Applicable</option>
+                            <select name="country" class="form-input" id="countrySelect">
+                                <option value="India" selected>India</option>
                                 <option value="Bangladesh">Bangladesh</option>
+                                <option value="Not Applicable">Not Applicable</option>
                             </select>
                         </div>
                     </div>
@@ -417,5 +412,42 @@
             history.go(-1);
         }
     });
+
+    const countryStateMap = {
+        "India": [
+            "Not Applicable", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+            "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala",
+            "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha",
+            "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh",
+            "Uttarakhand", "West Bengal", "Andaman and Nicobar Islands", "Chandigarh",
+            "Dadra and Nagar Haveli", "Daman and Diu", "Delhi", "Lakshadweep", "Puducherry"
+        ],
+        "Bangladesh": [
+            "Not Applicable", "Barisal", "Chittagong", "Dhaka", "Khulna", "Rajshahi", "Rangpur", 
+            "Mymensingh", "Sylhet"
+        ],
+        "Not Applicable": ["Not Applicable"]
+    };
+
+    const countrySelect = document.getElementById('countrySelect');
+    const stateSelect = document.getElementById('stateSelect');
+
+    function updateStates() {
+        const country = countrySelect.value;
+        const states = countryStateMap[country] || ["Not Applicable"];
+        
+        stateSelect.innerHTML = "";
+        states.forEach(state => {
+            const option = document.createElement("option");
+            option.value = state === "Not Applicable" ? "primary" : state;
+            option.textContent = state;
+            stateSelect.appendChild(option);
+        });
+    }
+
+    countrySelect.addEventListener('change', updateStates);
+    
+    // Initialize standard list on page load
+    updateStates();
 </script>
 {% endblock %}
