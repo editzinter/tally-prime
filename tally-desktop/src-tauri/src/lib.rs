@@ -18,8 +18,12 @@ pub fn run() {
         .plugin(tauri_plugin_updater::Builder::new().build())
         .invoke_handler(tauri::generate_handler![greet])
         .setup(|app| {
-            // Find the backend executable path dynamically
+            // Find the backend executable path dynamically based on OS
+            #[cfg(target_os = "windows")]
             let resource_path = app.path().resolve("backend/tally-backend.exe", tauri::path::BaseDirectory::Resource).unwrap();
+            
+            #[cfg(not(target_os = "windows"))]
+            let resource_path = app.path().resolve("backend/tally-backend", tauri::path::BaseDirectory::Resource).unwrap();
             
             println!("Starting backend at: {:?}", resource_path);
             let child = Command::new(&resource_path)

@@ -11,11 +11,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [windows-latest]
+        platform: [windows-latest, macos-latest, ubuntu-22.04]
 
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: install dependencies (ubuntu only)
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -40,10 +46,11 @@ jobs:
           pip install pyinstaller django Pillow numpy
           
       - name: Build Django backend
+        shell: bash
         run: |
-          pyinstaller tally-backend.spec 
-          New-Item -ItemType Directory -Force -Path "tally-desktop/src-tauri/backend"
-          Copy-Item -Path "dist\tally-backend\*" -Destination "tally-desktop/src-tauri/backend" -Recurse -Force
+          python -m PyInstaller tally-backend.spec 
+          mkdir -p tally-desktop/src-tauri/backend
+          cp -r dist/tally-backend/* tally-desktop/src-tauri/backend/
 
       - name: Build and Release Tauri App
         uses: tauri-apps/tauri-action@v0
