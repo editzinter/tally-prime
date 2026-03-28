@@ -143,7 +143,29 @@
           });
       }
 
-      setTimeout(checkBackend, 1000);
-    </script>
+      async function initiateSequence() {
+        try {
+          if (window.__TAURI__ && window.__TAURI__.updater && window.__TAURI__.process) {
+            stepLocalStatus.innerText = 'CHECKING UPDATES';
+            const update = await window.__TAURI__.updater.check();
+            if (update) {
+              globalStatus.innerText = `DOWNLOADING v${update.version}`;
+              stepLocalStatus.innerText = 'UPDATING';
+              stepLocal.classList.add('active');
+              await update.downloadAndInstall();
+              globalStatus.innerText = 'RESTARTING';
+              await window.__TAURI__.process.relaunch();
+              return; // Do not check backend, we are restarting
+            }
+          }
+        } catch (e) {
+          console.error('Update check failed:', e);
+        }
+        
+        stepLocalStatus.innerText = 'STARTING';
+        setTimeout(checkBackend, 1000);
+      }
+
+      initiateSequence();
   </body>
 </html>

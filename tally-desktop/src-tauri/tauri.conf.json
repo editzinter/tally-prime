@@ -20,7 +20,16 @@
       "csp": null
     }
   },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDRDRDBDNUU1MURBMUNBMkYKUldRdnlxRWQ1Y1hRVExSVjM0TUplZW1FS2w5ZkNQNkNYVXQxQVdTTDZzdDJPK2o2ZmRJUGg4bEwK",
+      "endpoints": [
+        "https://github.com/editzinter/tally-prime/releases/latest/download/latest.json"
+      ]
+    }
+  },
   "bundle": {
+    "createUpdaterArtifacts": true,
     "active": true,
     "targets": "all",
     "resources": ["backend/**/*"],
