@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block body %}
+    {% load static %}
+    <style>
+        .cmp-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(188, 195, 200, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .cmp-modal {
+            background-color: #F8F9FA;
+            border: 1px solid #2E5085;
+            width: 380px;
+            font-family: 'Geist', sans-serif;
+        }
+        .cmp-modal-header {
+            background-color: #172026;
+            color: #F8F9FA;
+            padding: 6px 12px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #2E5085;
+        }
+        .cmp-close {
+            color: #BCC3C8;
+            text-decoration: none;
+            font-size: 18px;
+            line-height: 1;
+            cursor: pointer;
+        }
+        .cmp-close:hover {
+            color: #F5B935;
+        }
+        .cmp-body {
+            padding: 4px 0;
+        }
+        .cmp-item {
+            display: block;
+            padding: 5px 12px;
+            color: #172026;
+            text-decoration: none;
+            font-size: 12px;
+            font-family: 'Geist', sans-serif;
+            cursor: pointer;
+        }
+        .cmp-item:hover {
+            background-color: #F5B935;
+            color: #172026;
+            font-weight: 500;
+        }
+        .cmp-section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: #2E5085;
+            padding: 6px 12px 2px;
+            letter-spacing: 0.5px;
+        }
+    </style>
+
+<div class="cmp-overlay">
+    <div class="cmp-modal">
+        <div class="cmp-modal-header">
+            <span>SELECT COMPANY</span>
+            <a href="javascript:history.go(-1);" class="cmp-close">&times;</a>
+        </div>
+        <div class="cmp-body">
+            {% if data %}
+                <div class="cmp-section-label">AVAILABLE COMPANIES</div>
+                {% for p in data %}
+                    <form method="POST" action="/selectcompony" style="margin:0;">
+                        {% csrf_token %}
+                        <input type="hidden" name="company_id" value="{{ p.pk }}">
+                        <button type="submit" class="cmp-item" style="width:100%;border:none;background:transparent;text-align:left;">{{ p.componyname }}</button>
+                    </form>
+                {% endfor %}
+            {% else %}
+                <div style="padding: 16px 12px; color: #8A9199; font-size: 12px; font-family: 'JetBrains Mono', monospace; text-align: center;">
+                    No companies found
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

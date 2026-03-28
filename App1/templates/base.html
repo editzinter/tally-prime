@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tally Prime</title>
+    <link rel="icon" href="{% static 'assets/images/favicon-32x32.png' %}" type="image/png" />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-sans/style.css">
+    <!-- Bootstrap (kept for child template compatibility) -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}" />
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            border-radius: 0 !important;
+        }
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100dvh;
+            font-family: 'Geist', sans-serif;
+            background-color: #BCC3C8;
+            overflow: hidden;
+            color-scheme: light;
+        }
+
+        /* ===== TALLY PRIME HEADER ===== */
+        .tp-super-header {
+            background-color: #172026;
+            display: flex;
+            height: 48px;
+            padding: 0;
+            border-bottom: 1px solid #2E5085;
+            user-select: none;
+        }
+
+        /* Logo Block */
+        .tp-logo-block {
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            border-right: 1px solid rgba(46, 80, 133, 0.3);
+            flex-shrink: 0;
+        }
+        .tp-logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+            align-items: flex-end;
+            margin-right: 8px;
+        }
+        .tally-script {
+            font-family: 'Segoe Script', 'Brush Script MT', cursive;
+            font-weight: bold;
+            font-size: 18px;
+            color: #F8F9FA;
+            letter-spacing: -0.5px;
+            margin-bottom: -2px;
+        }
+        .prime-sans {
+            font-family: 'Geist', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            color: #F8F9FA;
+            letter-spacing: 0.5px;
+        }
+        .tp-edition {
+            font-family: 'Geist', sans-serif;
+            font-size: 14px;
+            font-weight: 800;
+            color: #F8F9FA;
+        }
+
+        /* Header Content Area */
+        .tp-header-content {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .tp-top-row, .tp-bottom-row {
+            display: flex;
+            flex: 1;
+            align-items: center;
+        }
+        
+        /* Top Row */
+        .tp-top-row {
+            border-bottom: 1px solid rgba(46, 80, 133, 0.15);
+        }
+        .tp-window-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 0 16px;
+            color: #BCC3C8;
+            font-size: 12px;
+        }
+        .tp-window-controls span {
+            cursor: pointer;
+            transition: color 0.1s;
+        }
+        .tp-window-controls span:hover {
+            color: #F8F9FA;
+        }
+
+        .tp-search-container {
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            padding-right: 120px;
+        }
+        .tp-global-search {
+            background-color: #F8F9FA;
+            border: 1px solid #2E5085;
+            color: #172026;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            padding: 2px 8px;
+            width: 400px;
+            outline: none;
+            border-radius: 0;
+        }
+        .tp-global-search:focus {
+            background-color: #FEFBEA;
+            border-color: #F5B935;
+        }
+        .tp-global-search::placeholder {
+            color: rgba(23, 32, 38, 0.5);
+        }
+
+        /* Bottom Row */
+        .tp-bottom-row {
+            padding-right: 16px;
+        }
+        .tp-menu-left {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+        .tp-menu-center {
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            padding-right: 120px;
+        }
+        .tp-menu-right {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            gap: 16px;
+            margin-left: auto;
+        }
+
+        .tp-tab {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding: 0 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: #BCC3C8;
+            cursor: pointer;
+            text-decoration: none;
+            position: relative;
+        }
+        .tp-tab:hover {
+            color: #F8F9FA;
+        }
+        .tp-tab .tp-key {
+            color: #F5B935;
+            font-weight: 700;
+            text-decoration: underline;
+            margin-right: 1px;
+        }
+        .tp-tab:hover .tp-dropdown {
+            display: block;
+        }
+
+        .tp-switch-to {
+            background-color: #F8F9FA;
+            border: 1px solid #2E5085;
+            color: #172026;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            padding: 2px 16px;
+            cursor: pointer;
+            outline: none;
+            border-radius: 0;
+        }
+        .tp-switch-to .tp-key {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        .tp-switch-to:hover {
+            background-color: #F5B935;
+        }
+
+        /* ===== SECOND NAV ROW ===== */
+        .tp-nav {
+            background-color: #172026;
+            display: flex;
+            align-items: center;
+            height: 26px;
+            padding: 0;
+            border-bottom: 1px solid #2E5085;
+            overflow: visible;
+        }
+        .tp-nav::-webkit-scrollbar {
+            display: none;
+        }
+        .tp-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            height: 100%;
+            padding: 0 14px;
+            font-family: 'Geist', sans-serif;
+            font-size: 11px;
+            color: #BCC3C8;
+            cursor: pointer;
+            text-decoration: none;
+            white-space: nowrap;
+            border-right: 1px solid rgba(46, 80, 133, 0.2);
+            position: relative;
+        }
+        .tp-nav-item:hover {
+            background-color: rgba(245, 185, 53, 0.15);
+            color: #F8F9FA;
+        }
+        .tp-nav-item.active {
+            background-color: #2E5085;
+            color: #F8F9FA;
+            font-weight: 700;
+        }
+        .tp-nav-sep {
+            color: #2E5085;
+            font-size: 10px;
+            padding: 0 2px;
+        }
+
+        /* Dropdown Menus for Nav Items */
+        .tp-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #F8F9FA;
+            border: 1px solid #2E5085;
+            min-width: 180px;
+            z-index: 9999;
+            max-height: 80dvh;
+            overflow-y: auto;
+        }
+        .tp-nav-item:hover .tp-dropdown {
+            display: block;
+        }
+        .tp-dropdown a {
+            display: block;
+            padding: 4px 12px;
+            font-size: 11px;
+            color: #172026;
+            text-decoration: none;
+            font-family: 'Geist', sans-serif;
+        }
+        .tp-dropdown a:hover {
+            background-color: #F5B935;
+            color: #172026;
+        }
+        .tp-dropdown .dd-section {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: #2E5085;
+            padding: 6px 12px 2px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== PAGE CONTENT WRAPPER ===== */
+        .tp-page-wrapper {
+            height: calc(100dvh - 48px - 26px);
+            max-height: calc(100dvh - 48px - 26px);
+            overflow: hidden;
+            background-color: #BCC3C8;
+            position: relative;
+            border-bottom: 2px solid #2E5085;
+        }
+
+        /* Alert Messages */
+        .tp-alert {
+            background-color: #172026;
+            border: 1px solid #F5B935;
+            color: #F5B935;
+            padding: 4px 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            margin: 4px 8px;
+            cursor: pointer;
+        }
+
+        /* ===== GLOBAL FORM CONTROLS (UTILITARIAN) ===== */
+        .form-control, .form-input, select, textarea {
+            background-color: #FEFBEA !important;
+            border: 1px solid #2E5085 !important;
+            color: #172026 !important;
+            font-family: 'JetBrains Mono', monospace !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            min-height: 24px;
+        }
+        input[type="text"], input[type="number"], input[type="email"], input[type="password"], input[type="date"] {
+            background-color: #FEFBEA !important;
+            border: 1px solid #2E5085 !important;
+            color: #172026 !important;
+            font-family: 'JetBrains Mono', monospace !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            min-height: 24px;
+        }
+        select option {
+            background-color: #FEFBEA !important;
+            color: #172026 !important;
+        }
+        .form-control:focus, .form-input:focus, select:focus, textarea:focus {
+            background-color: #FEFBEA !important;
+            border: 2px solid #F5B935 !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        input[type="text"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="password"]:focus, input[type="date"]:focus {
+            background-color: #FEFBEA !important;
+            border: 2px solid #F5B935 !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        /* ===== GLOBAL LIST BUTTONS (UTILITARIAN) ===== */
+        .btns, .btns_prnt, .btns_prnt *, .btns_prnt2, .btns_prnt2 *, .btns_2, .btns_2 * {
+            color: #172026 !important;
+        }
+        label {
+            color: #172026;
+            font-weight: 500;
+            font-family: 'Geist', sans-serif;
+            font-size: 12px;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var $select1 = $('#select1'),
+                $select2 = $('#select2'),
+                $select3 = $('#name'),
+                $options = $select2.find('option'),
+                $options1 = $select3.find('option');
+            $select1.on('change', function() {
+                $select2.html($options.filter('[text="' + this.value + '"]'));
+                $select3.html($options1.filter('[text="' + this.value + '"]'));
+            }).trigger('change');
+        });
+    </script>
+</head>
+
+<body>
+    <!-- ===== TALLY PRIME HEADER BAR ===== -->
+    <header class="tp-super-header">
+        <!-- Logo Block -->
+        <div class="tp-logo-block">
+            <div class="tp-logo-text">
+                <span class="tally-script">Tally</span>
+                <span class="prime-sans">Prime</span>
+            </div>
+
+        </div>
+        
+        <!-- Header Content -->
+        <div class="tp-header-content">
+            <!-- Top Row -->
+            <div class="tp-top-row">
+                <div class="tp-window-controls">
+                    <!-- Removed window controls as requested -->
+                </div>
+                
+                <div class="tp-search-container">
+                    <input type="text" class="tp-global-search" placeholder="&#128269; Find details entered in masters and transactions. (Alt+F)">
+                </div>
+            </div>
+            
+            <!-- Bottom Row -->
+            <div class="tp-bottom-row">
+                <div class="tp-menu-left">
+                    <div class="tp-tab" style="position:relative;">
+                        <span class="tp-key">K</span>:Company
+                        <div class="tp-dropdown" style="top:100%;left:0;">
+                            <a href="/createcompony">Create Company</a>
+                            <a href="/changecompony">Alter Company</a>
+                            <a href="/selectcompony">Select Company</a>
+                            <a href="/home">Shut Company</a>
+                        </div>
+                    </div>
+                    <div class="tp-tab" style="position:relative;">
+                        <span class="tp-key">Y</span>:Data
+                        <div class="tp-dropdown" style="top:100%;left:0;">
+                            <a href="/feature/backup">Backup</a>
+                            <a href="/feature/restore">Restore</a>
+                            <a href="/feature/split-data">Split</a>
+                            <a href="/feature/data-path">Data Path</a>
+                        </div>
+                    </div>
+                    <div class="tp-tab" style="position:relative;">
+                        <span class="tp-key">Z</span>:Exchange
+                        <div class="tp-dropdown" style="top:100%;left:0;">
+                            <a href="/feature/data-sync">Data Synchronization</a>
+                            <a href="/feature/exchange-config">Configuration</a>
+                            <a href="/feature/online-access">Online Access</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tp-menu-center">
+                    <button class="tp-switch-to">
+                        <span class="tp-key">G</span>:Switch To
+                    </button>
+                </div>
+                
+                <div class="tp-menu-right">
+                    <div class="tp-tab" style="position:relative;">
+                        <span class="tp-key">O</span>:Import
+                        <div class="tp-dropdown" style="top:100%;left:0;">
+                            <a href="/feature/import-masters">Masters</a>
+                            <a href="/feature/import-transactions">Transactions</a>
+                            <a href="/feature/import-bank-details">Bank Details</a>
+                            <a href="/feature/import-manage">Manage</a>
+                            <a href="/feature/import-config">Configuration</a>
+                        </div>
+                    </div>
+                    <div class="tp-tab" style="position:relative;">
+                        <span class="tp-key">E</span>:Export
+                        <div class="tp-dropdown" style="top:100%;left:0;">
+                            <a href="/feature/export-current">Current</a>
+                            <a href="/feature/export-others">Others</a>
+                            <a href="/feature/export-masters">Masters</a>
+                            <a href="/feature/export-transactions">Transactions</a>
+                            <a href="/feature/export-config">Configuration</a>
+                        </div>
+                    </div>
+                    <div class="tp-tab" style="position:relative;">
+                        <span class="tp-key">M</span>:Share
+                        <div class="tp-dropdown" style="top:100%;left:0;">
+                            <a href="/feature/share-current">Current</a>
+                            <a href="/feature/share-others">Others</a>
+                            <a href="/feature/share-config">Configuration</a>
+                        </div>
+                    </div>
+                    <div class="tp-tab" style="position:relative;">
+                        <span class="tp-key">P</span>:Print
+                        <div class="tp-dropdown" style="top:100%;left:0;">
+                            <a href="/feature/print-current">Current</a>
+                            <a href="/feature/print-others">Others</a>
+                            <a href="/feature/print-config">Configuration</a>
+                        </div>
+                    </div>
+                    <div class="tp-tab" style="position:relative;">
+                        <span class="tp-key">F1</span>:Help
+                        <div class="tp-dropdown" style="top:100%;left:0;">
+                            <a href="/feature/help-tallyhelp">TallyHelp</a>
+                            <a href="/feature/help-upgrade">Upgrade</a>
+                            <a href="/feature/help-troubleshooting">Troubleshooting</a>
+                            <a href="/feature/help-about">About</a>
+                            <a href="/feature/help-settings">Settings</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== SECONDARY NAV ROW ===== -->
+    <div class="tp-nav">
+        <a href="/home" class="tp-nav-item active">Dashboard</a>
+        <span class="tp-nav-sep">&lsaquo;</span>
+
+        <div class="tp-nav-item">
+            Create
+            <div class="tp-dropdown">
+                <div class="dd-section">ACCOUNTING MASTERS</div>
+                <a href="/load_create_groups">Groups</a>
+                <a href="/load_create_ledgertype">Ledgers</a>
+                <a href="/load_create_vouchertyp">Voucher Types</a>
+                <a href="/load_create_currency">Currencies</a>
+            </div>
+        </div>
+        <span class="tp-nav-sep">&lsaquo;</span>
+
+        <div class="tp-nav-item">
+            Alter
+            <div class="tp-dropdown">
+                <div class="dd-section">ACCOUNTING MASTERS</div>
+                <a href="/group">Groups</a>
+                <a href="/ledger">Ledgers</a>
+                <a href="/voucher">Voucher Types</a>
+                <a href="/currency">Currencies</a>
+            </div>
+        </div>
+        <span class="tp-nav-sep">&lsaquo;</span>
+
+        <div class="tp-nav-item">
+            Chart Of Accounts
+            <div class="tp-dropdown">
+                <div class="dd-section">ACCOUNTING</div>
+                <a href="/group">Groups</a>
+                <a href="/ledger">Ledgers</a>
+                <a href="/voucher">Voucher Types</a>
+                <a href="/currency">Currencies</a>
+            </div>
+        </div>
+        <span class="tp-nav-sep">&lsaquo;</span>
+
+        <a href="/accounting_vouchers" class="tp-nav-item">Vouchers</a>
+        <span class="tp-nav-sep">&lsaquo;</span>
+
+        <a href="/daybook" class="tp-nav-item">Day Book</a>
+        <span class="tp-nav-sep">&lsaquo;</span>
+
+        <div class="tp-nav-item">
+            Banking
+            <div class="tp-dropdown">
+                <a href="{% url 'reconciliation' %}">Reconciliation</a>
+            </div>
+        </div>
+        <span class="tp-nav-sep">&lsaquo;</span>
+
+        <div class="tp-nav-item">
+            Accounting
+            <div class="tp-dropdown">
+                <a href="/balancesheet">Balance Sheet</a>
+                <a href="/profitloss">Profit &amp; Loss</a>
+                <a href="/stocksummary">Stock Summary</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PAGE CONTENT ===== -->
+    <div class="tp-page-wrapper">
+        <!-- Django Messages -->
+        {% for message in messages %} {% if message %}
+            <div class="tp-alert" onclick="this.style.display='none';">
+                {{ message }}
+            </div>
+        {% endif %} {% endfor %}
+
+        {% block body %} {% endblock %}
+    </div>
+
+    <!-- JavaScript -->
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/js/popper.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

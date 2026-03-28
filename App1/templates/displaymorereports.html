@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Display More Reports</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-sans/style.css">
+    <style>
+        * { padding: 0; margin: 0; font-family: 'Geist', sans-serif; box-sizing: border-box; }
+        html, body { height: 100vh; background-color: #BCC3C8; overflow: hidden; }
+
+        .top-bar { background-color: #172026; color: #F8F9FA; height: 28px; display: flex; align-items: center; padding: 0 12px; font-size: 12px; font-weight: 500; border-bottom: 1px solid #2E5085; }
+        .top-bar .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #BCC3C8; margin-left: auto; }
+
+        .main-layout { display: flex; height: calc(100vh - 28px - 22px); }
+        .left-panel { width: 50%; background-color: #F8F9FA; border-right: 1px solid #2E5085; display: flex; flex-direction: column; overflow: hidden; padding: 16px; }
+        .panel-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 800; color: #2E5085; letter-spacing: 1px; margin-bottom: 12px; }
+        .report-list { list-style: none; padding: 0; }
+        .report-item { display: block; padding: 8px 12px; font-size: 13px; color: #172026; text-decoration: none; border-bottom: 1px solid #e0e0e0; cursor: pointer; }
+        .report-item:hover { background-color: #F5B935; color: #172026; }
+        .report-desc { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #8A9199; margin-top: 2px; }
+
+        .right-panel { width: 50%; display: flex; justify-content: center; align-items: flex-start; padding: 16px; overflow-y: auto; }
+        .gateway-card { background-color: #F8F9FA; border: 1px solid #2E5085; width: 320px; }
+        .gateway-header { background-color: #172026; color: #F8F9FA; text-align: center; padding: 6px 8px; font-size: 13px; font-weight: 700; border-bottom: 1px solid #2E5085; letter-spacing: 0.5px; }
+        .section-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 800; color: #2E5085; padding: 6px 12px 2px; letter-spacing: 1px; border-top: 1px solid #2E5085; }
+        .section-label:first-of-type { border-top: none; }
+        .menu-item { display: block; width: 100%; text-align: left; background: transparent; border: none; padding: 4px 12px; font-size: 12px; font-family: 'Geist', sans-serif; color: #172026; cursor: pointer; text-decoration: none; line-height: 1.4; }
+        .menu-item:hover { background-color: #F5B935; color: #172026; }
+        .menu-item-link { text-decoration: none; display: block; }
+        .shortcut { text-decoration: underline; text-underline-offset: 2px; }
+
+        .bottom-bar { background-color: #F8F9FA; color: #172026; height: 22px; display: flex; align-items: center; padding: 0 12px; font-size: 11px; font-family: 'JetBrains Mono', monospace; border-top: 1px solid #2E5085; }
+        .bottom-bar span { margin-right: 16px; }
+        .bottom-bar .key { color: #2E5085; font-weight: 700; }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <span>Display More Reports</span>
+        <span class="mono">TallyPrime</span>
+    </div>
+    <div class="main-layout">
+        <div class="left-panel">
+            <div class="panel-title">AVAILABLE REPORTS</div>
+            <div class="report-list">
+                <a href="/trialbalance" class="report-item">
+                    Trial Balance
+                    <div class="report-desc">View all ledger balances with debit and credit totals</div>
+                </a>
+                <a href="/cashflow" class="report-item">
+                    Cash Flow Statement
+                    <div class="report-desc">Cash inflows and outflows by Operating, Investing, Financing</div>
+                </a>
+                <a href="/balancesheet" class="report-item">
+                    Balance Sheet
+                    <div class="report-desc">Assets and Liabilities as at current date</div>
+                </a>
+                <a href="/profitloss" class="report-item">
+                    Profit & Loss A/c
+                    <div class="report-desc">Income and Expenditure for the current period</div>
+                </a>
+                <a href="/ratioanalysis" class="report-item">
+                    Ratio Analysis
+                    <div class="report-desc">Financial ratios — liquidity, profitability, leverage</div>
+                </a>
+                <a href="/daybook" class="report-item">
+                    Day Book
+                    <div class="report-desc">All voucher entries for the current date</div>
+                </a>
+                <a href="/stocksummary" class="report-item">
+                    Stock Summary
+                    <div class="report-desc">Stock item details and valuations</div>
+                </a>
+            </div>
+        </div>
+        <div class="right-panel">
+            <div class="gateway-card">
+                <div class="gateway-header">REPORTS MENU</div>
+                <div class="section-label">FINANCIAL STATEMENTS</div>
+                <a href="/trialbalance" class="menu-item-link"><button class="menu-item"><span class="shortcut">T</span>rial Balance</button></a>
+                <a href="/cashflow" class="menu-item-link"><button class="menu-item"><span class="shortcut">C</span>ash Flow</button></a>
+                <a href="/balancesheet" class="menu-item-link"><button class="menu-item"><span class="shortcut">B</span>alance Sheet</button></a>
+                <a href="/profitloss" class="menu-item-link"><button class="menu-item"><span class="shortcut">P</span>rofit & Loss</button></a>
+                <div class="section-label">ANALYSIS</div>
+                <a href="/ratioanalysis" class="menu-item-link"><button class="menu-item"><span class="shortcut">R</span>atio Analysis</button></a>
+                <div class="section-label">REGISTERS</div>
+                <a href="/daybook" class="menu-item-link"><button class="menu-item"><span class="shortcut">D</span>ay Book</button></a>
+                <a href="/stocksummary" class="menu-item-link"><button class="menu-item"><span class="shortcut">S</span>tock Summary</button></a>
+            </div>
+        </div>
+    </div>
+    <div class="bottom-bar">
+        <span><a href="/home" style="text-decoration:none;color:inherit;"><span class="key">Esc:</span> Back</a></span>
+    </div>
+    <script>
+        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') window.location.href = '/home'; });
+    </script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+{% extends 'base.html' %}
+{% block body %}
+{% load static %}
+<style>
+    .feature-wrapper {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        background-color: #BCC3C8;
+    }
+    .feature-header {
+        background-color: #F8F9FA;
+        color: #172026;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 2px 12px;
+        font-size: 13px;
+        font-weight: 700;
+        border-bottom: 1px solid #2E5085;
+    }
+    .feature-header .close-btn {
+        cursor: pointer;
+        padding: 0 4px;
+        font-size: 16px;
+        color: #172026;
+        text-decoration: none;
+    }
+    .feature-header .close-btn:hover {
+        color: #F5B935;
+    }
+    .feature-body {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+    }
+    .feature-main {
+        background-color: #F8F9FA;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 16px 24px;
+        border-right: 1px solid #2E5085;
+    }
+    .feature-title {
+        font-family: 'Geist', sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #172026;
+        margin-bottom: 8px;
+    }
+    .feature-desc {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        color: #2E5085;
+        line-height: 1.6;
+        margin-bottom: 16px;
+    }
+    .feature-info-block {
+        background-color: #FEFBEA;
+        border: 1px solid #F5B935;
+        padding: 8px 12px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        color: #172026;
+        margin-bottom: 12px;
+    }
+    .feature-info-block .info-label {
+        font-weight: 700;
+        color: #F5B935;
+        margin-bottom: 4px;
+    }
+    .feature-status-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        color: #172026;
+        padding: 4px 0;
+    }
+    .feature-status-dot {
+        width: 8px;
+        height: 8px;
+        background-color: #F5B935;
+        display: inline-block;
+    }
+    .feature-middle {
+        flex: 1;
+        background-color: #BCC3C8;
+    }
+    .feature-sidebar {
+        width: 160px;
+        background-color: #BCC3C8;
+        border-left: 1px solid #2E5085;
+        display: flex;
+        flex-direction: column;
+        padding: 4px;
+        gap: 4px;
+        overflow-y: auto;
+    }
+    .sidebar-btn {
+        background-color: #F8F9FA;
+        border: 1px solid #2E5085;
+        color: #172026;
+        font-family: 'Geist', sans-serif;
+        font-size: 11px;
+        text-align: left;
+        padding: 4px 8px;
+        cursor: pointer;
+        display: flex;
+    }
+    .sidebar-key {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 700;
+        color: #2E5085;
+        width: 32px;
+    }
+    .sidebar-btn:hover {
+        background-color: #F5B935;
+    }
+    .sidebar-btn.disabled {
+        color: #BCC3C8;
+        cursor: default;
+    }
+    .sidebar-btn.disabled .sidebar-key {
+        color: #BCC3C8;
+    }
+    .sidebar-btn.disabled:hover {
+        background-color: #F8F9FA;
+    }
+    .feature-footer {
+        background-color: #F8F9FA;
+        border-top: 1px solid #2E5085;
+        display: flex;
+        align-items: center;
+        padding: 2px 12px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        gap: 24px;
+        height: 24px;
+    }
+    .footer-item {
+        color: #172026;
+        text-decoration: none;
+    }
+    .footer-key {
+        color: #2E5085;
+        font-weight: 700;
+    }
+</style>
+
+<div class="feature-wrapper">
+    <div class="feature-header">
+        <span>{{ feature_title }}</span>
+        <a href="javascript:history.go(-1);" class="close-btn">&times;</a>
+    </div>
+
+    <div class="feature-body">
+        <div class="feature-main">
+            <div class="feature-title">{{ feature_title }}</div>
+            <div class="feature-desc">{{ feature_description }}</div>
+
+            <div class="feature-info-block">
+                <div class="info-label">&#9432; MODULE INFORMATION</div>
+                <div>Category: {{ feature_category }}</div>
+                <div>Feature: {{ feature_name }}</div>
+                <div>Status: Ready</div>
+            </div>
+
+            <div class="feature-status-row">
+                <span class="feature-status-dot"></span>
+                <span>This module is available and connected.</span>
+            </div>
+            <div class="feature-status-row">
+                <span class="feature-status-dot"></span>
+                <span>No pending actions required.</span>
+            </div>
+        </div>
+
+        <div class="feature-middle"></div>
+
+        <div class="feature-sidebar">
+            <a href="/home" class="sidebar-btn" style="text-decoration:none;"><span class="sidebar-key">Esc</span><span>Dashboard</span></a>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F2</span><span>Date</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F3</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F4</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F5</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F6</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F7</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F8</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F9</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F10</span></div>
+            <div style="flex:1;"></div>
+            <div class="sidebar-btn"><span class="sidebar-key">F12</span><span>Configure</span></div>
+        </div>
+    </div>
+
+    <div class="feature-footer">
+        <a href="javascript:history.go(-1);" class="footer-item"><span class="footer-key">Q:</span> Quit</a>
+        <a href="/home" class="footer-item"><span class="footer-key">Esc:</span> Dashboard</a>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            window.location.href = '/home';
+        }
+    });
+</script>
+{% endblock %}

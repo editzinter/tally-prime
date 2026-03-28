@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+    {% block body %}
+    {% load static %}
+    <style>
+        .enter{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+        }
+    </style>
+
+  <div class="m-0">
+    <h6 style class="bg-info text-light p-2 m-0 text-center">Voucher Type Alteration(Secondary)</h6>
+            <form class="p-5" style="background-color: #F8F9FA;">
+                
+                <div class="p-3">
+                <div class="row container-fluid  p-2 m-0">
+                    <div class="col-sm-2 m-0 p-0"> <label for="a">Name</label></div>
+                    <div class="col-sm-3 m-0 p-0"><input type="text" class="form-control" id="a" placeholder=""></div>
+                    <div class="col-sm-7 m-0 p-0"></div>
+                </div>
+                <div class="row container-fluid  p-2 m-0">
+                    <div class="col-sm-2 m-0 p-0"> <label for="b">Alias</label></div>
+                    <div class="col-sm-3 m-0 p-0"> 
+                    <input type="text" class="form-control" id="b" placeholder=""></div>
+                    <div class="col-sm-7 m-0 p-0"></div>
+                </div>
+            </div>
+
+                
+                    
+                   
+                <div class="row container-fluid  p-0 m-0" style=" border: 1px solid rgba(128, 128, 128, 0.6);">
+                    <div class="col-sm-5 m-0 p-4" style=" border-right: 1px solid rgba(128, 128, 128, 0.6);">
+                        <h5 class="text-center">General</h5>
+                        <div class="row container-fluid  p-0">
+                            <div class="col-sm-6 m-0 p-0"></div>
+                            <div class="col-sm-6 m-0 p-0"></div>
+                        </div>
+
+                        <div class="row container-fluid  p-2">
+                            <div class="col-sm-6 m-0 p-0"> <label for="c">Select type of voucher</label></div>
+                            <div class="col-sm-6 m-0 p-0"><input type="text" class="form-control" id="c" placeholder=""></div>
+                        </div>
+
+                        <div class="row container-fluid  p-2">
+                            <div class="col-sm-6 m-0 p-0"> <label for="d">Abbreviation</label></div>
+                            <div class="col-sm-6 m-0 p-0"><input type="text" class="form-control" id="d" placeholder=""></div>
+                        </div>
+                        <div class="row container-fluid  p-2">
+                            <div class="col-sm-6 m-0 p-0"> <label for="e">Activate this voucher typeS</label></div>
+                            <div class="col-sm-6 m-0 p-0">
+                                <select name="Activate" id="e" class="form-control">
+                                    <option value="No">Yes</option> 
+                                    <option value="Yes">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row container-fluid  p-2">
+                            <div class="col-sm-6 m-0 p-0"> <label for="f">Method of voucher numbering</label></div>
+                            <div class="col-sm-6 m-0 p-0"><select name="method" id="f" class="form-control">
+                                <option value="auto">Automatic</option> 
+                                <option value="manu">Manual</option>
+                                <option value="overd">Automatic(Override)</option> 
+                                <option value="multi">Multiuser Auto</option>
+                                <option value="none">None</option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="row container-fluid  p-2">
+                            <div class="col-sm-6 m-0 p-0"> <label for="g">use effective dates  for vouchers</label></div>
+                            <div class="col-sm-6 m-0 p-0">
+                                <select name="usedate" id="g" class="form-control">
+                                    <option value="no">No</option>
+                                    <option value="yes">Yes</option> 
+                                   
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row container-fluid  p-2">
+                            <div class="col-sm-6 m-0 p-0"> <label for="h">Allow zero valued transactions</label></div>
+                            <div class="col-sm-6 m-0 p-0">
+                                <select name="zeroval" id="" class="form-control">
+                                    <option value="no">No</option>
+                                    <option value="yes">Yes</option> 
+                                   
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row container-fluid  p-2">
+                            <div class="col-sm-6 m-0 p-0"> <label for="i">Make voucher optional by default</label></div>
+                            <div class="col-sm-6 m-0 p-0">
+                                <select name="optional" id="i" class="form-control">
+                                    <option value="no">No</option>
+                                    <option value="yes">Yes</option> 
+                                   
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row container-fluid  p-2">
+                            <div class="col-sm-6 m-0 p-0"> <label for="j">Allow narration in voucher</label></div>
+                            <div class="col-sm-6 m-0 p-0">
+                                <select name="allownr" id="j" class="form-control">
+                                    <option value="no">No</option>
+                                    <option value="yes">Yes</option> 
+                                   
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row container-fluid  p-2">
+                            <div class="col-sm-6 m-0 p-0"> <label for="k">Provide narration for each leadger voucher</label></div>
+                            <div class="col-sm-6 m-0 p-0">
+                                <select name="providenr" id="k" class="form-control">
+                                    <option value="no">No</option>
+                                    <option value="yes">Yes</option> 
+                                   
+                                </select>
+                            </div>
+                        </div>
+                       
+                        
+
+                    </div>
+                    <div class="col-sm-4 m-0 p-4" style=" border-right: 1px solid rgba(128, 128, 128, 0.6);">
+                        <h5 class="text-center">Printing</h5>
+                        <div class="row container-fluid  p-2">
+                            <div class="col-sm-6 m-0 p-0"> <label for="l">Print voucher after saving</label></div>
+                            <div class="col-sm-6 m-0 p-0">
+                                <select name="providenr" id="l" class="form-control">
+                                    <option value="no">No</option>
+                                    <option value="yes">Yes</option> 
+                                   
+                                </select>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-sm-3 m-0 p-4">
+                        <h5 class="text-center">Name of class</h5>
+                    </div>
+                </div>
+                <!-- <div class="enter w-100 py-4"><button class="btn btn-info w-25">CREATE</button></div>   
+                 -->
+            </form>
+        </div>
+        
+        
+    {% endblock %}

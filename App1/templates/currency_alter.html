@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+    {% block body %}
+        {% load static %}
+        <style>
+            .flexy{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        .form1{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            
+        }
+        form{
+            padding:30px;
+        }
+        .close {
+            position: absolute;
+            top: 3px;
+            right: 8px;
+            font-size: 25px;
+            color: #F8F9FA;
+            transform: rotate(45deg);
+            cursor: pointer;
+            text-decoration: none;
+            
+        }
+        button{
+            background-color: #172026; ;
+            color: #F8F9FA;
+            padding:10px 20px;
+        }
+    </style>
+
+       <div class="row container-fluid  p-0">
+        <div class="col-sm-3 m-0 p-0"></div>
+        <div class="col-sm-6 m-0 p-0" style=" background-color: #F8F9FA;">
+            <a href="javascript:history.go(-1);" class="close">+</a>
+        <h6 style class="bg-info text-light p-2">Currency Alteration(Secondary)</h6>
+        <div class="row container-fluid">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+                <form action="/update_currency/{{ i.id }}" method="post">
+                    {% csrf_token %}
+        
+                    <label for="a">Symbol</label>
+                    <input type="text" class="form-control" id="a" placeholder="" value="{{ i.symbol }}" name="symbol">
+                    <label for="b">Formal Name</label>
+                    <input type="text" class="form-control" id="b" placeholder="" value="{{ i.formal_name }}" name="fname">
+                    <label for="c">ISO Currency Code</label>
+                    <input type="text" class="form-control" id="c" placeholder="" value="{{ i.ISO_code }}" name="iso_code">
+                    <label for="d">Number of Decimal places</label>
+                    <input type="text" class="form-control" id="d" placeholder="" value="{{ i.decimal_places}}" name="n_deci_placs">
+                    <label for="e">Show amount in millions</label>
+                    {% if i.show_in_millions == 'No' %}
+                    <select name="smt_millon" id="e" class="form-control">
+                        <option value="No">No</option> 
+                        <option value="Yes">Yes</option>
+                    </select>
+                    {% elif i.show_in_millions == 'Yes' %}
+                    <select name="smt_millon" id="e" class="form-control">
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option> 
+                        
+
+                    </select>
+                    {% endif %}
+                    <label for="f">Suffix symbol to amount</label>
+                    {% if i.suffix_to_amount == 'No' %}
+                    <select name="symbol_to_amount" id="f" class="form-control">
+                        <option value="No">No</option> 
+                        <option value="Yes">Yes</option>
+                    </select>
+                    {% elif i.suffix_to_amount == 'Yes' %}
+                    <select name="symbol_to_amount" id="f" class="form-control">
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option> 
+                        
+                    </select>
+                    {% endif %}
+
+                    <label for="g">Add space between symbol and amount</label>
+                    {% if i.space_symbol_amount == 'No' %}
+
+                    <select name="space_bt_sy" id="g" class="form-control">
+                        <option value="No">No</option> 
+                        <option value="Yes">Yes</option>
+                    </select>
+                    {% elif i.space_symbol_amount  == 'Yes' %}
+
+                    <select name="space_bt_sy" id="g" class="form-control">
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option> 
+                        
+                    </select>
+                    {% endif %}
+                    <label for="h">Word representing amount after decimal</label>
+                    <input type="text" class="form-control" id="h" placeholder="" value="{{ i.amount_after_decimal}}">
+
+                    <label for="i">No, of decimal places for amount in words</label>
+                    {% if i.decimal_no_in_words == 'No' %}
+
+                    <select name="amount_in_words" id="i" class="form-control">
+                        <option value="No">No</option> 
+                        <option value="Yes">Yes</option>
+                    </select>
+                    {% elif i.decimal_no_in_words == 'Yes' %}
+
+                    <select name="amount_in_words" id="i" class="form-control">
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option> 
+                        
+                    </select>
+                    {% endif %}
+                    
+                    <div class="flexy">
+                        <button type="submit" class="btn btn-info w-50 my-2" >Update</button>
+                    </div>
+                   
+
+                </form>
+              
+
+            </div>
+            <div class="col-sm-2"></div>
+
+        </div>
+        </div>
+        <div class="col-sm-3  m-0 p-0"></div>
+
+       </div> 
+     
+    
+{% endblock %}

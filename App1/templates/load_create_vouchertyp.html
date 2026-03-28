@@ -1,0 +1,306 @@
+
+    {% extends 'base.html' %}
+    {% block body %}
+    {% load static %}
+    <style>
+        .enter{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+        }
+        .hide{
+            display:none;
+        }
+    </style>
+   
+
+  <div class="m-0" style="height: 100%; max-height: 100%; overflow-y: auto;">
+    <h6 style class="bg-info text-light p-2 m-0 text-center">Create Voucher type</h6>
+    
+            <form class="p-5" action="create_voucher" method="post" style="background-color: #F8F9FA;">
+                {% csrf_token %}
+
+                
+                <div class="p-3">
+                <div class="row container-fluid  p-2 m-0">
+                    <div class="col-sm-2 m-0 p-0"> <label for="a">Name</label></div>
+                    <div class="col-sm-3 m-0 p-0"><input type="text" class="form-control" id="a" placeholder="" name="nam"></div>
+                    <div class="col-sm-7 m-0 p-0"></div>
+                </div>
+                <div class="row container-fluid  p-2 m-0">
+                    <div class="col-sm-2 m-0 p-0"> <label for="b">Alias</label></div>
+                    <div class="col-sm-3 m-0 p-0"> 
+                    <input type="text" class="form-control" id="b" placeholder="" name="alias"></div>
+                    <div class="col-sm-7 m-0 p-0"></div>
+                </div>
+            </div>
+
+                
+                    
+                   
+                <div class="row container-fluid  p-0 m-0" style=" border: 1px solid rgba(128, 128, 128, 0.6);">
+                    <div class="col-sm-5 m-0 p-4" style=" border-right: 1px solid rgba(128, 128, 128, 0.6);">
+                        <h5 class="text-center">General</h5>
+                        <div class="row container-fluid  p-0">
+                            <div class="col-sm-6 m-0 p-0"></div>
+                            <div class="col-sm-6 m-0 p-0"></div>
+                        </div>
+
+                        <div class="row container-fluid  p-2">
+                            <div class="col-sm-6 m-0 p-0"> <label for="c">Select type of voucher</label></div>
+                            <div class="col-sm-6 m-0 p-0">
+
+                                <select required onchange="hi()" name="vtype" id="aa" class=" form-control">
+                                    <option value="" selected disabled>select type</option>
+                                    <option value="Attendence" >Attendence</option>
+                                    <option  value="contra">Contra</option>
+                                    <option value="CreditNote">Credit Note</option>
+                                    <option  value="CreditNote">Credit Note</option>
+                                    <option value="DebitNote">Debit Note</option>
+                                    <option  value="DeliveryNote">Delivery Note</option>
+                                    <option value="JobWorkinOrder">Job work in Order</option>
+                                    <option  value="JobWorkOutOrder">Job Work Out Order</option>
+                                    <option  value="Journal">Journal</option>
+                                    <option  value="MaterialIn">Material In</option>
+                                    <option value="MaterialOut">Material Out</option>
+                                    <option  value="Memorandum">Memorandum</option>
+                                    <option  value="Payment">Payment</option>
+                            `       <option value="Payroll">Payroll</option>
+                                    <option  value="PhysicalStock">Physical Stock</option>
+                                    <option  value="Purchase">Purchase</option>
+                                    <option value="PurchaseOrder">Purchase Order</option>
+                                    <option  value="Receipt">Receipt</option>
+                                    <option  value="ReceiptNote">Receipt Note</option>
+                                    <option value="RejectionIn">Rejection In</option>
+                                    <option value="RejectionOut">Rejection Out</option>
+                                    <option  value="ReversingJournal">Reversing Journal</option>
+                                    <option value="Sales">Sales</option>
+                                    <option value="SalesOrder">Sales Order</option>
+                                    <option value="StockJournal">Stock Journal</option>
+                                                            
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row container-fluid  p-2">
+                            <div class="col-sm-6 m-0 p-0"> <label for="d">Abbreviation</label></div>
+                            <div class="col-sm-6 m-0 p-0"><input type="text" class="form-control" id="ab" placeholder=""  name="abbre"></div>
+                        </div>
+                        <div class="row container-fluid  p-2">
+                            <div class="col-sm-6 m-0 p-0"> <label for="e">Activate this voucher type</label></div>
+                            <div class="col-sm-6 m-0 p-0">
+                                <select name="avtyp" id="e" class="form-control">
+                                    <option value="No">Yes</option> 
+                                    <option value="Yes">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        
+                        <hr>
+                        <div class="row container-fluid  p-2">
+                            <div class="col-sm-6 m-0 p-0"> <label for="f">Method of voucher numbering</label></div>
+                            <div class="col-sm-6 m-0 p-0"><select onchange="shw()"  name="meth_vou_num" id="mtdvhr" class="form-control">
+                                <option value="">----select---</option>
+                                <option value="auto">Automatic</option> 
+                                <option value="manu">Manual</option>
+                                <option value="overd">Automatic(Manual Override)</option> 
+                                <option value="none">None</option>
+                            </select>
+                            </div>
+                        </div>
+                    
+
+                        
+<hr>
+                        <div class="row container-fluid  p-2">
+                            <div class="col-sm-6 m-0 p-0"> <label for="g">use effective dates  for vouchers</label></div>
+                            <div class="col-sm-6 m-0 p-0">
+                                <select name="uefftdate" id="g" class="form-control">
+                                    <option value="No">No</option>
+                                    <option value="Yes">Yes</option> 
+                                   
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row container-fluid  p-2">
+                            <div class="col-sm-6 m-0 p-0"> <label for="h">Allow zero valued transactions</label></div>
+                            <div class="col-sm-6 m-0 p-0">
+                                <select name="allow_zero_trans" id="" class="form-control">
+                                    <option value="No">No</option>
+                                    <option value="Yes">Yes</option> 
+                                   
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row container-fluid  p-2">
+                            <div class="col-sm-6 m-0 p-0"> <label for="i">Make voucher optional by default</label></div>
+                            <div class="col-sm-6 m-0 p-0">
+                                <select name="optional" id="i" class="form-control">
+                                    <option value="No">No</option>
+                                    <option value="Yes">Yes</option> 
+                                   
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row container-fluid  p-2">
+                            <div class="col-sm-6 m-0 p-0"> <label for="j">Allow narration in voucher</label></div>
+                            <div class="col-sm-6 m-0 p-0">
+                                <select name="allow_naration_in_vou" id="j" class="form-control">
+                                    <option value="No">No</option>
+                                    <option value="Yes">Yes</option> 
+                                   
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row container-fluid  p-2">
+                            <div class="col-sm-6 m-0 p-0"> <label for="k">Provide narration for each leadger voucher</label></div>
+                            <div class="col-sm-6 m-0 p-0">
+                                <select name="providenr" id="k" class="form-control">
+                                    <option value="No">No</option>
+                                    <option value="Yes">Yes</option> 
+                                   
+                                </select>
+                            </div>
+                        </div>
+                       
+                        
+
+                    </div>
+                    <div class="col-sm-4 m-0 p-4" style=" border-right: 1px solid rgba(128, 128, 128, 0.6);">
+                        <h5 class="text-center">Printing</h5>
+                        <div class="row container-fluid  p-2">
+                            <div class="col-sm-6 m-0 p-0"> <label for="l">Print voucher after saving</label></div>
+                            <div class="col-sm-6 m-0 p-0">
+                                <select name="print" id="l" class="form-control">
+                                    <option value="No">No</option>
+                                    <option value="Yes">Yes</option> 
+                                   
+                                </select>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-sm-3 m-0 p-4">
+                        <h5 class="text-center">Name of class</h5>
+                    </div>
+                </div>
+                <div class="enter w-100 py-4"><button class="btn btn-info w-25">CREATE</button></div>   
+                
+            </form>
+        </div>
+        <script>
+
+            
+        
+
+
+            function hi(){
+                var status = document.getElementById("aa");
+                var a = status.value
+                console.log(a);
+                if( a == "Attendence" )
+                {
+                    document.getElementById("ab").value = "Attd";
+                    // document.getElementById('dd').style.display = "block";
+    
+                }
+                else if( a == "contra" ){
+                    document.getElementById("ab").value = "ctra";
+    
+                }
+                else if( a == "CreditNote" ){
+                    document.getElementById("ab").value = "C/Note";
+    
+                }
+                else if( a == "DebitNote" ){
+                    document.getElementById("ab").value = "D/Note";
+    
+                }
+                else if( a == "DeliveryNote" ){
+                    document.getElementById("ab").value = "Dely Note";
+    
+                }
+                else if( a == "JobWorkinOrder" ){
+                    document.getElementById("ab").value = "Job Wrk in Ordr";
+    
+                }
+                else if( a == "JobWorkOutOrder" ){
+                    document.getElementById("ab").value = "Job Wrk out Ordr";
+    
+                }
+                else if( a == "Journal" ){
+                    document.getElementById("ab").value = "Jrnl";
+    
+                }
+                else if( a == "MaterialIn" ){
+                    document.getElementById("ab").value = "Mat in";
+    
+                }
+                else if( a == "MaterialOut" ){
+                    document.getElementById("ab").value = "Mat out";
+    
+                }
+                else if( a == "Memorandum" ){
+                    document.getElementById("ab").value = "Memo";
+    
+                }
+                else if( a == "Payment" ){
+                    document.getElementById("ab").value = "Pymt";
+    
+                }
+                else if( a == "Payroll" ){
+                    document.getElementById("ab").value = "Pyrl";
+    
+                }
+                else if( a == "PhysicalStock" ){
+                    document.getElementById("ab").value = "Phy stk";
+    
+                }
+                else if( a == "Purchase" ){
+                    document.getElementById("ab").value = "Purc";
+    
+                }
+                else if( a == "PurchaseOrder" ){
+                    document.getElementById("ab").value = "Pruc Order";
+    
+                }
+                else if( a == "Receipt" ){
+                    document.getElementById("ab").value = "Rcpt";
+    
+                }
+                else if( a == "ReceiptNote" ){
+                    document.getElementById("ab").value = "Rcpt Note";
+    
+                }
+                else if( a == "RejectionIn" ){
+                    document.getElementById("ab").value = "Rej In";
+    
+                }
+                else if( a == "RejectionOut" ){
+                    document.getElementById("ab").value = "Rej Out ";
+    
+                }
+                else if( a == "ReversingJournal" ){
+                    document.getElementById("ab").value = "Rev jrnl";
+    
+                }
+                else if( a == "Sales" ){
+                    document.getElementById("ab").value = "Sale";
+    
+                }
+                else if( a == "SalesOrder" ){
+                    document.getElementById("ab").value = "Sales Ordr";
+    
+                }
+                else if( a == "StockJournal" ){
+                    document.getElementById("ab").value = "Stk jrnl";
+    
+                }
+    
+            }
+        </script>
+        
+    {% endblock %}

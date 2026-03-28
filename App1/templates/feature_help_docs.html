@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block body %}
+{% load static %}
+<style>
+    .hd-wrapper{display:flex;flex-direction:column;height:100%;background:#BCC3C8}.hd-header{background:#F8F9FA;color:#172026;display:flex;justify-content:space-between;align-items:center;padding:2px 12px;font-size:13px;font-weight:700;border-bottom:1px solid #2E5085}.hd-header .close-btn{cursor:pointer;padding:0 4px;font-size:16px;color:#172026;text-decoration:none}.hd-header .close-btn:hover{color:#F5B935}.hd-body{display:flex;flex:1;overflow:hidden}.hd-main{background:#F8F9FA;flex:1;display:flex;flex-direction:column;overflow-y:auto;border-right:1px solid #2E5085}.hd-section-title{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;color:#2E5085;letter-spacing:.5px;padding:8px 16px 4px;border-bottom:1px solid #2E5085}.hd-content{padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#172026;line-height:1.6}
+    .hd-topic{padding:6px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;border-bottom:1px solid #BCC3C8;color:#172026}.hd-topic:hover{background:#FEFBEA}.hd-topic.active{background:#F5B935;font-weight:700}
+    .hd-search{width:100%;padding:4px 12px;border:1px solid #2E5085;background:#F8F9FA;font-family:'JetBrains Mono',monospace;font-size:11px;outline:none;margin:8px 16px 4px;box-sizing:border-box;width:calc(100% - 32px)}.hd-search:focus{border-color:#F5B935;background:#FEFBEA}
+    .hd-middle{flex:1;background:#BCC3C8}.hd-sidebar{width:160px;background:#BCC3C8;border-left:1px solid #2E5085;display:flex;flex-direction:column;padding:4px;gap:4px}
+    .sb-btn{background:#F8F9FA;border:1px solid #2E5085;color:#172026;font-family:'Geist',sans-serif;font-size:11px;text-align:left;padding:4px 8px;cursor:pointer;display:flex;text-decoration:none}.sb-key{font-family:'JetBrains Mono',monospace;font-weight:700;color:#2E5085;width:32px}.sb-btn:hover{background:#F5B935}.sb-btn.disabled{color:#BCC3C8;cursor:default}.sb-btn.disabled .sb-key{color:#BCC3C8}.sb-btn.disabled:hover{background:#F8F9FA}
+    .hd-footer{background:#F8F9FA;border-top:1px solid #2E5085;display:flex;align-items:center;padding:2px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;gap:24px;height:24px}.hd-footer a{color:#172026;text-decoration:none}.hd-footer .fk{color:#2E5085;font-weight:700}
+</style>
+
+<div class="hd-wrapper">
+    <div class="hd-header"><span>Help & Documentation</span><a href="javascript:history.go(-1);" class="close-btn">&times;</a></div>
+    <div class="hd-body">
+        <div class="hd-main" style="max-width:240px;border-right:1px solid #2E5085;">
+            <input type="text" class="hd-search" placeholder="Search topics..." oninput="filterTopics(this.value)">
+            <div class="hd-section-title">GETTING STARTED</div>
+            <div class="hd-topic active" onclick="showTopic(this,'start')">First-Time Setup</div>
+            <div class="hd-topic" onclick="showTopic(this,'company')">Creating a Company</div>
+            <div class="hd-topic" onclick="showTopic(this,'navigation')">Navigation Shortcuts</div>
+            <div class="hd-section-title">ACCOUNTING</div>
+            <div class="hd-topic" onclick="showTopic(this,'vouchers')">Voucher Entry</div>
+            <div class="hd-topic" onclick="showTopic(this,'ledgers')">Ledger Management</div>
+            <div class="hd-topic" onclick="showTopic(this,'groups')">Group Hierarchy</div>
+            <div class="hd-topic" onclick="showTopic(this,'reports')">Reports & Statements</div>
+            <div class="hd-section-title">DATA MANAGEMENT</div>
+            <div class="hd-topic" onclick="showTopic(this,'backup')">Backup & Restore</div>
+            <div class="hd-topic" onclick="showTopic(this,'import')">Import Data</div>
+            <div class="hd-topic" onclick="showTopic(this,'export')">Export Data</div>
+            <div class="hd-section-title">ADVANCED</div>
+            <div class="hd-topic" onclick="showTopic(this,'gst')">GST Compliance</div>
+            <div class="hd-topic" onclick="showTopic(this,'multiuser')">Multi-user Setup</div>
+        </div>
+        <div class="hd-main" style="flex:2;">
+            <div class="hd-content" id="helpContent">
+                <h3 style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#2E5085;margin:0 0 8px;">First-Time Setup</h3>
+                <p><strong>Welcome to TallyPrime.</strong> This guide will help you get started.</p>
+                <p><strong>Step 1: Create a Company</strong><br>Navigate to <em>Company > Create</em> to set up your company profile including name, address, and financial year dates.</p>
+                <p><strong>Step 2: Configure Chart of Accounts</strong><br>Set up your ledger groups and create necessary ledger accounts under appropriate groups (Assets, Liabilities, Income, Expenses).</p>
+                <p><strong>Step 3: Enter Opening Balances</strong><br>For existing businesses, enter opening balances for all ledger accounts to carry forward data from your previous financial year.</p>
+                <p><strong>Step 4: Start Voucher Entry</strong><br>Begin recording daily transactions using vouchers — Sales, Purchase, Receipt, Payment, Journal, and Contra.</p>
+                <p><strong>Keyboard Shortcuts:</strong></p>
+                <ul style="padding-left:20px;">
+                    <li><strong>Alt+F1</strong> — Detailed/Condensed view</li>
+                    <li><strong>Alt+F2</strong> — Change period</li>
+                    <li><strong>Alt+F3</strong> — Company menu</li>
+                    <li><strong>F11</strong> — Features menu</li>
+                    <li><strong>F12</strong> — Configuration menu</li>
+                </ul>
+            </div>
+        </div>
+        <div class="hd-middle"></div>
+        <div class="hd-sidebar">
+            <a href="javascript:history.go(-1);" class="sb-btn"><span class="sb-key">Esc</span><span>Back</span></a>
+            <div class="sb-btn disabled"><span class="sb-key">F2</span></div><div class="sb-btn disabled"><span class="sb-key">F3</span></div><div class="sb-btn disabled"><span class="sb-key">F4</span></div><div class="sb-btn disabled"><span class="sb-key">F5</span></div><div class="sb-btn disabled"><span class="sb-key">F6</span></div><div class="sb-btn disabled"><span class="sb-key">F7</span></div><div class="sb-btn disabled"><span class="sb-key">F8</span></div><div class="sb-btn disabled"><span class="sb-key">F9</span></div><div class="sb-btn disabled"><span class="sb-key">F10</span></div>
+            <div style="flex:1;"></div>
+            <div class="sb-btn disabled"><span class="sb-key">F12</span></div>
+        </div>
+    </div>
+    <div class="hd-footer"><a href="javascript:history.go(-1);"><span class="fk">Q:</span> Quit</a><a href="/home"><span class="fk">Esc:</span> Dashboard</a></div>
+</div>
+<script>
+var topics={start:'<h3 style="font-family:JetBrains Mono,monospace;font-size:13px;color:#2E5085;margin:0 0 8px;">First-Time Setup</h3><p>Welcome guide content as shown above...</p>',company:'<h3 style="font-family:JetBrains Mono,monospace;font-size:13px;color:#2E5085;margin:0 0 8px;">Creating a Company</h3><p>Go to <strong>Company > Create</strong>. Enter company name, address, statutory info, and financial year. The company data will be stored in the configured data path.</p>',navigation:'<h3 style="font-family:JetBrains Mono,monospace;font-size:13px;color:#2E5085;margin:0 0 8px;">Navigation Shortcuts</h3><p><strong>Esc</strong> — Go back<br><strong>Enter</strong> — Accept/Select<br><strong>Alt+F1</strong> — Toggle detail<br><strong>Alt+F2</strong> — Change date range<br><strong>Ctrl+A</strong> — Accept form<br><strong>Ctrl+Q</strong> — Quit current screen</p>',vouchers:'<h3 style="font-family:JetBrains Mono,monospace;font-size:13px;color:#2E5085;margin:0 0 8px;">Voucher Entry</h3><p>Access vouchers from <strong>Transactions > Accounting Vouchers</strong>. Types include Sales (F8), Purchase (F9), Receipt (F6), Payment (F5), Journal (F7), and Contra (F4).</p>',ledgers:'<h3 style="font-family:JetBrains Mono,monospace;font-size:13px;color:#2E5085;margin:0 0 8px;">Ledger Management</h3><p>Create ledgers under appropriate groups. Each ledger belongs to a group that determines its behavior in financial statements.</p>',groups:'<h3 style="font-family:JetBrains Mono,monospace;font-size:13px;color:#2E5085;margin:0 0 8px;">Group Hierarchy</h3><p>Groups organize ledgers. Primary groups: Capital Account, Loans, Current Assets, Current Liabilities, Fixed Assets, Direct/Indirect Income, Direct/Indirect Expenses.</p>',reports:'<h3 style="font-family:JetBrains Mono,monospace;font-size:13px;color:#2E5085;margin:0 0 8px;">Reports</h3><p>Access Balance Sheet, P&L, Trial Balance, Day Book, Cash Flow and more from the Gateway of Tally.</p>',backup:'<h3 style="font-family:JetBrains Mono,monospace;font-size:13px;color:#2E5085;margin:0 0 8px;">Backup & Restore</h3><p>Use <strong>Data > Backup</strong> to create backups. Use <strong>Data > Restore</strong> to restore from a backup file.</p>','import':'<h3 style="font-family:JetBrains Mono,monospace;font-size:13px;color:#2E5085;margin:0 0 8px;">Import</h3><p>Import masters and transactions from XML, CSV, or Excel via <strong>Import</strong> menu.</p>','export':'<h3 style="font-family:JetBrains Mono,monospace;font-size:13px;color:#2E5085;margin:0 0 8px;">Export</h3><p>Export reports, masters, and transactions in Excel, PDF, XML, or other formats.</p>',gst:'<h3 style="font-family:JetBrains Mono,monospace;font-size:13px;color:#2E5085;margin:0 0 8px;">GST Compliance</h3><p>Configure GST under <strong>F11 > Statutory</strong>. Enter GSTIN and enable GST for the company.</p>',multiuser:'<h3 style="font-family:JetBrains Mono,monospace;font-size:13px;color:#2E5085;margin:0 0 8px;">Multi-user Setup</h3><p>Enable TallyPrime Server for multi-user access. Configure users and access rights from the security menu.</p>'};
+function showTopic(el,key){var all=document.querySelectorAll('.hd-topic');for(var i=0;i<all.length;i++)all[i].classList.remove('active');el.classList.add('active');if(topics[key])document.getElementById('helpContent').innerHTML=topics[key];}
+function filterTopics(q){var items=document.querySelectorAll('.hd-topic');q=q.toLowerCase();for(var i=0;i<items.length;i++){items[i].style.display=items[i].textContent.toLowerCase().indexOf(q)>-1?'':'none';}}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')history.go(-1);});
+</script>
+{% endblock %}

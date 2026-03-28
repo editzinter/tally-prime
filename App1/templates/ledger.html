@@ -1,0 +1,253 @@
+{% extends 'base.html' %}
+{% block body %}
+{% load static %}
+
+<style>
+    *, *::before, *::after {
+        box-sizing: border-box;
+        border-radius: 0 !important;
+    }
+    .btns_prnt {
+        width: 100%;
+        text-align: start;
+        background-color: transparent;
+        border: none;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    .btns_prnt h5 {
+        margin: 0;
+        padding: 0 16px;
+        font-size: 12px;
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 500;
+        color: #172026;
+    }
+    .btns_prnt:hover {
+        background-color: #F5B935 !important;
+    }
+    .btn-util {
+        border-radius: 0 !important;
+        font-family: 'Geist', sans-serif !important;
+        font-size: 11px !important;
+        font-weight: bold !important;
+        cursor: pointer !important;
+        transition: all 0.1s ease !important;
+    }
+    .btn-util-primary {
+        background-color: #2E5085 !important;
+        color: #F8F9FA !important;
+        border: none !important;
+    }
+    .btn-util-primary:hover {
+        background-color: #F5B935 !important;
+        color: #172026 !important;
+    }
+    .btn-util-sec {
+        background-color: #BCC3C8 !important;
+        color: #172026 !important;
+        border: 1px solid #2E5085 !important;
+    }
+    .btn-util-sec:hover {
+        background-color: #F8F9FA !important;
+        border-color: #F5B935 !important;
+    }
+    .nodec {
+        text-decoration: none;
+    }
+    .bg-model {
+        background-color: rgba(23, 32, 38, 0.4);
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+    .close {
+        position: absolute;
+        top: 0;
+        right: 10px;
+        font-size: 30px;
+        color: #F8F9FA;
+        transform: rotate(45deg);
+        cursor: pointer;
+    }
+    .titles2 {
+        width: 100%;
+        text-align: start;
+        padding: 10px 12px 5px;
+        color: #172026;
+        font-size: 13px;
+        font-weight: bold;
+    }
+    .btns_prnt2 {
+        width: 100%;
+        text-align: start;
+        background-color: transparent;
+        border: none;
+        padding: 4px 12px;
+        text-decoration: none;
+        display: block;
+        font-size: 12px;
+        color: #172026;
+    }
+    .btns_prnt2:hover {
+        background-color: #F5B935;
+    }
+    .btns_2 {
+        width: 100%;
+        text-align: end;
+        background-color: transparent;
+        border: none;
+        padding: 6px 12px;
+        font-size: 11px;
+        color: #172026;
+        cursor: pointer;
+    }
+    .btns_2:hover {
+        background-color: #F5B935;
+    }
+    .moreText {
+        display: none;
+    }
+    .show-more .moreText {
+        display: block;
+    }
+</style>
+
+<div style="height: 100%; display: flex; flex-direction: column;">
+    <!-- Sub-header -->
+    <h6 style="color: #172026; background-color: #F8F9FA; padding: 4px 12px; margin: 0; border-bottom: 1px solid #2E5085; font-size: 12px; font-weight: bold;">Alter</h6>
+
+    <!-- Main Flex Row -->
+    <div style="display: flex; flex: 1; overflow: hidden;">
+        
+        <!-- Left Panel: Data List -->
+        <div style="width: 55%; height: 100%; background-color: #F8F9FA; border-right: 1px solid #2E5085; overflow-y: auto; display: flex; flex-direction: column;">
+            
+            <!-- List Header Section -->
+            <div style="display: flex; padding: 12px 16px; border-bottom: 1px solid #BCC3C8; align-items: center; justify-content: space-between; flex-shrink: 0;">
+                <div>
+                    <h5 style="color: #172026; font-size: 16px; margin: 0;">List Of Ledgers</h5>
+                </div>
+                <div style="text-align: right;">
+                    <h5 style="color: #172026; font-size: 16px; margin: 0 0 5px 0;">For 1-Apr-22</h5>
+                    <a href="ledgerpage" style="text-decoration: none;">
+                        <button class="btn-util btn-util-primary" style="padding: 4px 12px; width: 80px;">Create</button>
+                    </a><br>
+                    <a href="{% url 'home' %}" style="text-decoration: none;">
+                        <button class="btn-util btn-util-sec" style="padding: 3px 11px; width: 80px; margin-top: 4px;">Back</button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- List Body Section -->
+            <div style="flex: 1; overflow-y: auto;">
+                <div style="height: 4px;"></div>
+                {% for j in led %}
+                    <a href="{% url 'update_ledger' j.id %}" class="nodec">
+                        <button class="btns_prnt">
+                            <h5>{{ j.ledger_name }}</h5>
+                        </button>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Right Panel: Gateway Panel -->
+        <div style="width: 45%; height: 100%; background-color: #BCC3C8; padding: 12px; display: flex; justify-content: center; align-items: flex-start;">
+            <div style="width: 80%; background-color: #F8F9FA; border: 1px solid #2E5085; display: flex; flex-direction: column; overflow: hidden; box-shadow: 4px 4px 0 rgba(46,80,133,0.1);">
+                <h5 style="background-color: #2E5085; color: #F8F9FA; margin: 0; text-align: center; padding: 4px; font-size: 12px; font-weight: bold;">Gateway of Tally</h5>
+                <div style="flex: 1; overflow-y: auto; padding-bottom: 12px;">
+                    
+                    <p class="titles" style="text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 800; letter-spacing: 0.5px; border-bottom: 1px solid #BCC3C8; margin: 8px 12px 4px; padding: 0 0 4px 0; color: #2E5085;">MASTERS</p>
+                    <button class="btns_prnt" id="create-btn"><h5>Create</h5></button>
+                    <a href="{% url 'ledger' %}" class="nodec"><button class="btns_prnt"><h5>Alter</h5></button></a>
+                    <a href="{% url 'group' %}" class="nodec"><button class="btns_prnt"><h5>Chart of Accounts</h5></button></a>
+                    
+                    <p class="titles" style="text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 800; letter-spacing: 0.5px; border-bottom: 1px solid #BCC3C8; margin: 8px 12px 4px; padding: 0 0 4px 0; color: #2E5085;">TRANSACTIONS</p>
+                    <a href="{% url 'accounting_vouchers' %}" class="nodec"><button class="btns_prnt"><h5>Vouchers</h5></button></a>
+                    <a href="{% url 'daybook' %}" class="nodec"><button class="btns_prnt"><h5>Day Book</h5></button></a>
+                    
+                    <p class="titles" style="text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 800; letter-spacing: 0.5px; border-bottom: 1px solid #BCC3C8; margin: 8px 12px 4px; padding: 0 0 4px 0; color: #2E5085;">UTILITIES</p>
+                    <a href="{% url 'banking_stub' %}" class="nodec"><button class="btns_prnt"><h5>Banking</h5></button></a>
+                    
+                    <p class="titles" style="text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 800; letter-spacing: 0.5px; border-bottom: 1px solid #BCC3C8; margin: 8px 12px 4px; padding: 0 0 4px 0; color: #2E5085;">REPORTS</p>
+                    <a href="{% url 'balancesheet' %}" class="nodec"><button class="btns_prnt"><h5>Balance Sheet</h5></button></a>
+                    <a href="{% url 'profitloss' %}" class="nodec"><button class="btns_prnt"><h5>Profit & Loss A/C</h5></button></a>
+                    <a href="{% url 'stocksummary' %}" class="nodec"><button class="btns_prnt"><h5>Stock Summary</h5></button></a>
+                    <a href="{% url 'ratioanalysis' %}" class="nodec"><button class="btns_prnt"><h5>Ratio Analysis</h5></button></a>
+                    <a href="{% url 'displaymorereports' %}" class="nodec"><button class="btns_prnt"><h5>Display More Reports</h5></button></a>
+                    
+                    <div style="height: 12px;"></div>
+                    <a href="{% url 'home' %}" class="nodec"><button class="btns_prnt"><h5>Quit</h5></button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="bg-model" id="master-creation-modal">
+    <div style="width: 25%; background-color: #BCC3C8; border: 1px solid #2E5085; position: relative; padding-bottom: 12px;">
+        <div class="close" id="modal-close">+</div>
+        <h5 style="background-color: #F8F9FA; color: #172026; text-align: center; padding: 8px; margin: 0; font-size: 12px; font-weight: bold;">MASTER CREATION</h5>
+        <h5 style="background-color: #172026; color: #F8F9FA; text-align: start; padding: 8px; margin: 0; font-size: 12px;">List of Masters</h5>
+        
+        <div class="modal-list" id="modal-scroll-area">
+            <a href="{% url 'changecompony' %}" class="nodec"><button class="btns_2">Change Company</button></a>
+            <button class="btns_2" id="toggle-more-btn">Show more</button>
+            
+            <h6 class="titles2">Accounting Masters</h6>
+            <a href="/load_create_groups" class="btns_prnt2">Group</a>
+            <a href="/load_create_ledgertype" class="btns_prnt2">Ledger</a>
+            <a href="{% url 'currency' %}" class="btns_prnt2">Currency</a>
+            <a href="{% url 'budget' %}" class="btns_prnt2 moreText">Budget</a>
+            <a href="{% url 'scenario' %}" class="btns_prnt2 moreText">Scenario</a>
+            <a href="{% url 'voucher' %}" class="btns_prnt2">Voucher Type</a>
+            <a href="{% url 'creditlimits' %}" class="btns_prnt2 moreText">Credit Limits</a>
+            
+            <h6 class="titles2">Inventory Masters</h6>
+            <a href="{% url 'stockgroup' %}" class="btns_prnt2">Stock group</a>
+            <a href="{% url 'stockcategory' %}" class="btns_prnt2">Stock Category</a>
+            <a href="{% url 'stockitem' %}" class="btns_prnt2">Stock Item</a>
+            <a href="{% url 'unit' %}" class="btns_prnt2">Unit</a>
+            <a href="{% url 'godown' %}" class="btns_prnt2">Godown</a>
+            
+            <h6 class="titles2">Statutory Details</h6>
+            <a href="{% url 'gstdetails' %}" class="btns_prnt2">GST Details</a>
+            <a href="{% url 'pancindetails' %}" class="btns_prnt2">PAN/CIN Details</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('create-btn').addEventListener("click", function() {
+        document.getElementById('master-creation-modal').style.display = "flex";
+    });
+
+    document.getElementById('modal-close').addEventListener("click", function() {
+        document.getElementById('master-creation-modal').style.display = "none";
+    });
+
+    const toggleBtn = document.getElementById('toggle-more-btn');
+    const scrollArea = document.getElementById('modal-scroll-area');
+
+    toggleBtn.addEventListener("click", (e) => {
+        scrollArea.classList.toggle("show-more");
+        if (toggleBtn.innerText === "Show more") {
+            toggleBtn.innerText = "Show less";
+        } else {
+            toggleBtn.innerText = "Show more";
+        }
+    });
+</script>
+
+{% endblock %}

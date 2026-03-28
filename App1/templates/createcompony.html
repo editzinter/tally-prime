@@ -1,0 +1,421 @@
+{% extends 'base.html' %}
+{% block body %}
+{% load static %}
+<style>
+    * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+    }
+    html, body {
+        height: 100dvh;
+        background-color: #BCC3C8; /* Industrial Grey */
+        overflow: hidden;
+        font-family: 'Geist', sans-serif;
+    }
+    
+    /* Layout Wrapper */
+    .company-creation-wrapper {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        background-color: #BCC3C8;
+    }
+
+    /* Sub-header for the screen */
+    .screen-header {
+        background-color: #F8F9FA;
+        color: #172026;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 2px 12px;
+        font-size: 13px;
+        font-weight: 700;
+        border-bottom: 1px solid #2E5085;
+    }
+    .screen-header .close-btn {
+        cursor: pointer;
+        padding: 0 4px;
+        font-size: 16px;
+        color: #172026;
+        text-decoration: none;
+    }
+    .screen-header .close-btn:hover {
+        color: #F5B935;
+    }
+
+    /* Main Content Area */
+    .main-content {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+    }
+
+    /* Left Form Area (White Background) */
+    .form-area {
+        background-color: #F8F9FA;
+        width: 65%;
+        border-right: 1px solid #2E5085;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+    }
+
+    /* Data Path Section */
+    .data-path-section {
+        display: flex;
+        padding: 8px 12px;
+        border-bottom: 1px solid #2E5085;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+    }
+    .data-path-label {
+        width: 130px;
+        color: #172026;
+    }
+    .colon {
+        padding: 0 8px;
+        color: #2E5085;
+    }
+    .data-path-value {
+        color: #172026;
+        font-weight: 700;
+    }
+
+    /* Main Form Layout */
+    .form-body {
+        display: flex;
+        padding: 12px;
+        gap: 24px;
+    }
+
+    /* Left & Right Form Columns */
+    .form-col-left {
+        flex: 1;
+        max-width: 50%;
+    }
+    .form-col-right {
+        flex: 1;
+    }
+
+    /* Form Fields */
+    .form-row {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 4px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+    }
+    .form-label {
+        width: 120px;
+        color: #172026;
+        padding-top: 4px; /* align with input */
+    }
+    .form-input-wrap {
+        flex: 1;
+        display: flex;
+    }
+    .form-input {
+        width: 100%;
+        background-color: transparent;
+        border: 1px solid transparent;
+        border-bottom: 1px solid #BCC3C8;
+        padding: 2px 4px;
+        color: #172026;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        outline: none;
+    }
+    /* Input Highlights */
+    .form-input:focus {
+        background-color: #FEFBEA; /* Input Cream */
+        border: 1px solid #F5B935; /* Operator Amber */
+    }
+    textarea.form-input {
+        resize: none;
+        height: 60px;
+    }
+    select.form-input {
+        cursor: pointer;
+        background-color: #F8F9FA;
+        color: #172026;
+    }
+    select.form-input option {
+        background-color: #F8F9FA;
+        color: #172026;
+        padding: 4px 8px;
+    }
+    select.form-input option:hover,
+    select.form-input option:checked {
+        background-color: #F5B935;
+        color: #172026;
+    }
+
+    /* Spacer for logical grouped fields */
+    .form-spacer {
+        height: 16px;
+    }
+    .horizontal-divider {
+        border: none;
+        border-top: 1px dotted #BCC3C8;
+        margin: 12px 12px;
+    }
+
+    /* Bottom Section inside form area (Currency info) */
+    .currency-section {
+        padding: 0 12px 12px 12px;
+    }
+    
+    /* Global Accept Button (hidden standard submit, we'll use a hotkey overlay or simple button) */
+    .hidden-submit {
+        display: none;
+    }
+
+    /* Middle Empty Grey Area */
+    .middle-grey {
+        flex: 1;
+        background-color: #BCC3C8;
+    }
+
+    /* Right Sidebar (F2, F3, etc) */
+    .right-sidebar {
+        width: 160px;
+        background-color: #BCC3C8;
+        border-left: 1px solid #2E5085;
+        display: flex;
+        flex-direction: column;
+        padding: 4px;
+        gap: 4px;
+        overflow-y: auto;
+    }
+    .sidebar-btn {
+        background-color: #F8F9FA;
+        border: 1px solid #2E5085;
+        color: #172026;
+        font-family: 'Geist', sans-serif;
+        font-size: 11px;
+        text-align: left;
+        padding: 4px 8px;
+        cursor: pointer;
+        display: flex;
+    }
+    .sidebar-key {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 700;
+        color: #2E5085;
+        width: 32px;
+    }
+    .sidebar-btn:hover {
+        background-color: #F5B935;
+    }
+    .sidebar-btn.disabled {
+        color: #BCC3C8;
+        cursor: default;
+    }
+    .sidebar-btn.disabled .sidebar-key {
+        color: #BCC3C8;
+    }
+    .sidebar-btn.disabled:hover {
+        background-color: #F8F9FA;
+    }
+
+    /* Bottom Footer Bar */
+    .footer-bar {
+        background-color: #F8F9FA;
+        border-top: 1px solid #2E5085;
+        display: flex;
+        align-items: center;
+        padding: 2px 12px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        gap: 24px;
+        height: 24px;
+    }
+    .footer-item {
+        color: #172026;
+    }
+    .footer-key {
+        color: #2E5085;
+        font-weight: 700;
+    }
+</style>
+
+<div class="company-creation-wrapper">
+    <!-- Sub Header -->
+    <div class="screen-header">
+        <span>Company Creation</span>
+        <a href="javascript:history.go(-1);" class="close-btn">&times;</a>
+    </div>
+
+    <!-- Main Content -->
+    <form class="main-content" method="post" action="{% url 'crtecompony' %}" id="creationForm">
+        {% csrf_token %}
+        <button type="submit" class="hidden-submit" id="submitBtn"></button>
+        
+        <!-- White Form Area -->
+        <div class="form-area">
+            
+            <div class="data-path-section">
+                <div class="data-path-label">Company Data Path</div>
+                <div class="colon">:</div>
+                <div class="data-path-value">C:\Users\Public\TallyPrime\data</div>
+            </div>
+
+            <div class="form-body">
+                <!-- Left Column -->
+                <div class="form-col-left">
+                    <div class="form-row">
+                        <div class="form-label">Company Name</div><div class="colon">:</div>
+                        <div class="form-input-wrap"><input type="text" name="componyname" class="form-input" autofocus required></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">Mailing Name</div><div class="colon">:</div>
+                        <div class="form-input-wrap"><input type="text" name="mailingname" class="form-input"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">Address</div><div class="colon">:</div>
+                        <div class="form-input-wrap"><textarea name="address" class="form-input"></textarea></div>
+                    </div>
+                    
+                    <div class="form-spacer"></div>
+
+                    <div class="form-row">
+                        <div class="form-label">State</div><div class="colon">:</div>
+                        <div class="form-input-wrap">
+                            <select name="state" class="form-input">
+                                <option value="primary">Not Applicable</option>
+                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <!-- truncated for standard UI -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">Country</div><div class="colon">:</div>
+                        <div class="form-input-wrap">
+                            <select name="country" class="form-input">
+                                <option value="India">India</option>
+                                <option value="Countryt">Not Applicable</option>
+                                <option value="Bangladesh">Bangladesh</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">Pincode</div><div class="colon">:</div>
+                        <div class="form-input-wrap"><input type="text" name="pincode" class="form-input"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">Telephone</div><div class="colon">:</div>
+                        <div class="form-input-wrap"><input type="text" name="telphone" class="form-input"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">Mobile</div><div class="colon">:</div>
+                        <div class="form-input-wrap"><input type="text" name="mobile" class="form-input"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">Fax</div><div class="colon">:</div>
+                        <div class="form-input-wrap"><input type="text" name="fax" class="form-input"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">E-mail</div><div class="colon">:</div>
+                        <div class="form-input-wrap"><input type="text" name="email" class="form-input"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">Website</div><div class="colon">:</div>
+                        <div class="form-input-wrap"><input type="text" name="website" class="form-input"></div>
+                    </div>
+                </div>
+
+                <!-- Right Column (Financial Year) -->
+                <div class="form-col-right">
+                    <div class="form-row">
+                        <div class="form-label" style="width:190px;">Financial year beginning from</div><div class="colon">:</div>
+                        <div class="form-input-wrap"><input type="date" name="fyearbgn" class="form-input"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label" style="width:190px;">Books beginning from</div><div class="colon">:</div>
+                        <div class="form-input-wrap"><input type="date" name="booksbgn" class="form-input"></div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="horizontal-divider">
+
+            <!-- Currency Settings -->
+            <div class="currency-section">
+                <div class="form-row">
+                    <div class="form-label">Base Currency symbol</div><div class="colon">:</div>
+                    <div class="form-input-wrap">
+                        <select name="curncysymbl" class="form-input" style="width:80px;">
+                            <option value="₹">₹</option>
+                            <option value="$">$</option>
+                            <option value="TK">TK</option> 
+                        </select>
+                    </div>
+                    <!-- Spacer so it doesn't span full width unnecessarily -->
+                    <div style="flex:1;"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">Formal name</div><div class="colon">:</div>
+                    <div class="form-input-wrap">
+                        <select name="crncyname" class="form-input" style="width:160px;">
+                            <option value="INR">INR</option>
+                            <option value="USD">USD</option>
+                            <option value="Bangladeshi taka">Bangladeshi taka</option> 
+                        </select>
+                    </div>
+                    <div style="flex:1;"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Middle Grey Area (Empty) -->
+        <div class="middle-grey"></div>
+
+        <!-- Right Sidebar Menu -->
+        <div class="right-sidebar">
+            <div class="sidebar-btn"><span class="sidebar-key">F2</span><span>Date</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F3</span><span>Shut Company</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F4</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F5</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F6</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F7</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F8</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F9</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F10</span></div>
+            
+            <div style="flex:1;"></div>
+            
+            <div class="sidebar-btn disabled"><span class="sidebar-key">R</span><span>Group Company</span></div>
+            <div class="sidebar-btn" onclick="document.getElementById('submitBtn').click();"><span class="sidebar-key">A</span><span>Accept</span></div>
+            <div class="sidebar-btn"><span class="sidebar-key">F12</span><span>Configure</span></div>
+        </div>
+
+    </form>
+    
+    <!-- Footer Bar -->
+    <div class="footer-bar">
+        <a href="javascript:history.go(-1);" style="text-decoration:none;" class="footer-item"><span class="footer-key">Q:</span> Quit</a>
+        <a href="javascript:void(0);" onclick="document.getElementById('submitBtn').click();" style="text-decoration:none;" class="footer-item"><span class="footer-key">A:</span> Accept</a>
+    </div>
+</div>
+
+<script>
+    // Add hotkey listeners for typical terminal interactions
+    document.addEventListener('keydown', function(event) {
+        // Ctrl+A to save/accept
+        if (event.ctrlKey && (event.key === 'a' || event.key === 'A')) {
+            event.preventDefault();
+            document.getElementById('submitBtn').click();
+        }
+        // Escape to Quit
+        if (event.key === 'Escape') {
+            history.go(-1);
+        }
+    });
+</script>
+{% endblock %}

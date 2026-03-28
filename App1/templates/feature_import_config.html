@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block body %}
+{% load static %}
+<style>
+    .ic-wrapper{display:flex;flex-direction:column;height:100%;background:#BCC3C8}.ic-header{background:#F8F9FA;color:#172026;display:flex;justify-content:space-between;align-items:center;padding:2px 12px;font-size:13px;font-weight:700;border-bottom:1px solid #2E5085}.ic-header .close-btn{cursor:pointer;padding:0 4px;font-size:16px;color:#172026;text-decoration:none}.ic-header .close-btn:hover{color:#F5B935}.ic-body{display:flex;flex:1;overflow:hidden}.ic-main{background:#F8F9FA;flex:1;display:flex;flex-direction:column;overflow-y:auto;border-right:1px solid #2E5085}.ic-form{padding:12px 16px}.ic-row{display:flex;align-items:center;margin-bottom:6px;font-family:'JetBrains Mono',monospace;font-size:11px}.ic-label{width:220px;color:#172026}.ic-colon{padding:0 8px;color:#2E5085}.ic-input{flex:1;background:transparent;border:none;border-bottom:1px solid #BCC3C8;padding:2px 4px;color:#172026;font-family:'JetBrains Mono',monospace;font-size:11px;outline:none}.ic-input:focus{background:#FEFBEA;border-bottom:1px solid #F5B935}.ic-section-title{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;color:#2E5085;letter-spacing:.5px;padding:8px 16px 4px;border-bottom:1px solid #2E5085}.ic-middle{flex:1;background:#BCC3C8}.ic-sidebar{width:160px;background:#BCC3C8;border-left:1px solid #2E5085;display:flex;flex-direction:column;padding:4px;gap:4px}.sb-btn{background:#F8F9FA;border:1px solid #2E5085;color:#172026;font-family:'Geist',sans-serif;font-size:11px;text-align:left;padding:4px 8px;cursor:pointer;display:flex;text-decoration:none}.sb-key{font-family:'JetBrains Mono',monospace;font-weight:700;color:#2E5085;width:32px}.sb-btn:hover{background:#F5B935}.sb-btn.disabled{color:#BCC3C8;cursor:default}.sb-btn.disabled .sb-key{color:#BCC3C8}.sb-btn.disabled:hover{background:#F8F9FA}.ic-footer{background:#F8F9FA;border-top:1px solid #2E5085;display:flex;align-items:center;padding:2px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;gap:24px;height:24px}.ic-footer a{color:#172026;text-decoration:none}.ic-footer .fk{color:#2E5085;font-weight:700}.ic-action-btn{background:#2E5085;color:#F8F9FA;border:1px solid #172026;padding:4px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;margin-top:8px}.ic-action-btn:hover{background:#F5B935;color:#172026}.ic-status{padding:8px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;border-top:1px solid #2E5085;color:#2E5085}
+</style>
+<div class="ic-wrapper">
+    <div class="ic-header"><span>Import Configuration</span><a href="javascript:history.go(-1);" class="close-btn">&times;</a></div>
+    <div class="ic-body">
+        <div class="ic-main">
+            <div class="ic-section-title">DEFAULT IMPORT SETTINGS</div>
+            <div class="ic-form">
+                <div class="ic-row"><div class="ic-label">Default File Format</div><div class="ic-colon">:</div>
+                    <select class="ic-input" id="icFmt" style="cursor:pointer;background:#F8F9FA;"><option value="xml" {% if config.default_format == 'xml' %}selected{% endif %}>XML</option><option value="csv" {% if config.default_format == 'csv' %}selected{% endif %}>CSV</option><option value="excel" {% if config.default_format == 'excel' %}selected{% endif %}>Excel (.xlsx)</option><option value="json" {% if config.default_format == 'json' %}selected{% endif %}>JSON</option></select></div>
+                <div class="ic-row"><div class="ic-label">Default Master Type</div><div class="ic-colon">:</div>
+                    <select class="ic-input" id="icType" style="cursor:pointer;background:#F8F9FA;"><option value="ledgers" {% if config.default_master_type == 'ledgers' %}selected{% endif %}>Ledgers</option><option value="groups" {% if config.default_master_type == 'groups' %}selected{% endif %}>Groups</option><option value="currencies" {% if config.default_master_type == 'currencies' %}selected{% endif %}>Currencies</option></select></div>
+                <div class="ic-row"><div class="ic-label">Duplicate Handling</div><div class="ic-colon">:</div>
+                    <select class="ic-input" id="icDup" style="cursor:pointer;background:#F8F9FA;"><option value="ignore" {% if config.duplicate_handling == 'ignore' %}selected{% endif %}>Ignore Duplicates</option><option value="modify" {% if config.duplicate_handling == 'modify' %}selected{% endif %}>Modify with New Data</option></select></div>
+                <button class="ic-action-btn" onclick="icSave()">Save Configuration</button>
+            </div>
+            <div class="ic-status" id="icSt">&#9679; Configuration loaded</div>
+        </div>
+        <div class="ic-middle"></div>
+        <div class="ic-sidebar">
+            <a href="javascript:history.go(-1);" class="sb-btn"><span class="sb-key">Esc</span><span>Back</span></a>
+            <div class="sb-btn disabled"><span class="sb-key">F2</span></div><div class="sb-btn disabled"><span class="sb-key">F3</span></div><div class="sb-btn disabled"><span class="sb-key">F4</span></div><div class="sb-btn disabled"><span class="sb-key">F5</span></div><div class="sb-btn disabled"><span class="sb-key">F6</span></div><div class="sb-btn disabled"><span class="sb-key">F7</span></div><div class="sb-btn disabled"><span class="sb-key">F8</span></div><div class="sb-btn disabled"><span class="sb-key">F9</span></div><div class="sb-btn disabled"><span class="sb-key">F10</span></div>
+            <div style="flex:1;"></div>
+            <div class="sb-btn" onclick="icSave()"><span class="sb-key">S</span><span>Save</span></div>
+        </div>
+    </div>
+    <div class="ic-footer"><a href="javascript:history.go(-1);"><span class="fk">Q:</span> Quit</a><a href="/home"><span class="fk">Esc:</span> Dashboard</a></div>
+</div>
+<script>
+function icSave(){
+    var fd=new FormData();fd.append('default_format',document.getElementById('icFmt').value);fd.append('default_master_type',document.getElementById('icType').value);fd.append('duplicate_handling',document.getElementById('icDup').value);
+    fetch('/feature/import-config',{method:'POST',body:fd,headers:{'X-CSRFToken':'{{ csrf_token }}'}}).then(function(r){return r.json();}).then(function(d){document.getElementById('icSt').innerHTML='&#9679; '+d.message;});
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')history.go(-1);});
+</script>
+{% endblock %}

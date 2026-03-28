@@ -1,0 +1,247 @@
+
+    {% extends 'base.html' %}
+    {% block body %}
+    {% load static %}
+    <style>
+        .enter{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+        }
+        .hide{
+            display:none;
+        }
+    </style>
+   
+
+  <div class="m-0">
+    <h6 style class="bg-info text-light p-2 m-0 text-center">Update Ledger</h6>
+    
+            <form class="p-5" action="/save_ledger/{{ j.id }}" method="post" style="background-color: #F8F9FA;">
+                {% csrf_token %}
+
+                
+                <div class="p-3">
+                <div class="row container-fluid  p-2 m-0">
+                    <div class="col-sm-2 m-0 p-0"> <label for="a">Name</label></div>
+                    <div class="col-sm-3 m-0 p-0"><input type="text" class="form-control" id="a" value="{{ j.ledger_name }}" name="name"></div>
+                    <div class="col-sm-7 m-0 p-0"></div>
+                </div>
+                <div class="row container-fluid  p-2 m-0">
+                    <div class="col-sm-2 m-0 p-0"> <label for="b">Alias</label></div>
+                    <div class="col-sm-3 m-0 p-0"> 
+                    <input type="text" class="form-control" id="b" value="{{ j.alias }}" name="alias"></div>
+                    <div class="col-sm-7 m-0 p-0"></div>
+                </div>
+            </div>
+
+                
+                    
+                   
+                <div class="row container-fluid  p- m-" style=" border: 1px solid rgba(128, 128, 128, 0.6);">
+                    <div class="col-sm-4 m-0 p-4" style=" border-right: 1px solid rgba(128, 128, 128, 0.6);">
+                        <!-- <h5 class="text-center">Under</h5> -->
+                        <div class="row container-fluid  p-0">
+                            <div class="col-sm-10 m-0 p-0"></div>
+                            <div class="col-sm-6 m-0 p-0"></div>
+                        </div>
+
+                        <div class="row container-fluid  p-0">
+                            <div class="col-sm-6 m-0 p-0"> <label for="c">Under</label></div>
+                            <div class="col-sm-6 m-0 p-0">
+
+                                <select name="Ltype" id="aa" class=" form-control">
+                                    <option value="Bank_Account">Bank_Accounts</option>
+                                    <option value="Bank_OCC_AC" >Bank OCC</option>
+                                    <option  value="Bankod">Bank OD</option>
+                                    <option value="Bank_Account">Branch Division</option>
+                                    <option  value="Bank_Account">Capital Amount</option>
+                                    <option value="Bank_Account">Cash in Hand</option>
+                                    <option  value="Curntasts1">Current Assets</option>
+                                    <option value="current_liabilities">Current Liabilities</option>
+                                    <option  value="Bank-Account1">Deposits(Asset)</option>
+                                    <option  value="dirctexpncs1">Direct Expenses</option>
+                                    <option  value="directincome">Direct Incomes</option>
+                                    <option value="dutiesAndtax">Duties and Taxes</option>
+                                    <option  value="Expences_direct">Expenses(Direct)</option>
+                                    <option  value="Payment">Expences(Indirect)</option>
+                            `       <option value="Fixed_Assets">Fixed Assets</option>
+                                    <option  value="income_direct">income(Direct)</option>
+                                    <option  value="Investments">Investments</option>
+                                    <option value="loans_advance">Loans and Advances(Assets)</option>
+                                    <option  value="Loans_liablity">Loans(Liability)</option>
+                                    <option  value="Mis_Expenses">Misc.Expenses</option>
+                                    <option value="provisons">provisions</option>
+                                    <option value="Purchase_Accounts">purchase accounts</option>
+                                    <option  value="retained">Retained Earning</option>
+                                    <option value="Sales_Account">Sales Account</option>
+                                    <option value="Secured_loans">Secured Loans</option>
+                                    <option value="stock">Stock-in-Hand</option>
+                                                            
+                                </select>
+                            </div>
+                        </div>
+                        
+
+                        <!-- <div class="row container-fluid  p-2">
+                            <div class="col-sm-6 m-0 p-0"> <label for="d">Abbreviation</label></div>
+                            <div class="col-sm-6 m-0 p-0"><input type="text" class="form-control" id="ab" placeholder=""  name="abbre"></div>
+                        </div> -->
+                        <div class="col-sm-3 my-1">
+                            <!-- <div class="col-sm-6 m-0 p-0"> <label for="e">Activate this voucher type</label></div>
+                            <div class="col-sm-6 m-0 p-0">
+                                <select name="avtyp" id="e" class="form-control">
+                                    <option value="No">Yes</option> 
+                                    <option value="Yes">No</option>
+                                </select> -->
+                            <!-- </div> -->
+                        </div>
+
+                        
+                    
+                        <div class="row container-fluid  p-0">
+                            <!-- <div class="col-sm-6 m-0 p-0"> <label for="f">Method of voucher numbering</label></div> -->
+                            <!-- <div class="col-sm-6 m-0 p-0"><select onchange="shw()"  name="meth_vou_num" id="mtdvhr" class="form-control">
+                                <option value="">----select---</option>
+                                <option value="auto">Automatic</option> 
+                                <option value="manu">Manual</option>
+                                <option value="overd">Automatic(Manual Override)</option> 
+                                <option value="none">None</option>
+                            </select>
+                            </div> -->
+                        </div>
+                    
+
+                        
+                        <div class="row container-fluid  p-2">
+                            <!-- <div class="col-sm-6 m-0 p-0"> <label for="g">use effective dates  for vouchers</label></div>
+                            <div class="col-sm-6 m-0 p-0">
+                                <select name="uefftdate" id="g" class="form-control">
+                                    <option value="No">No</option>
+                                    <option value="Yes">Yes</option> 
+                                   
+                                </select>
+                            </div> -->
+                        </div>
+                        <div class="row container-fluid  p-2">
+                            <!-- <div class="col-sm-6 m-0 p-0"> <label for="h">Allow zero valued transactions</label></div>
+                            <div class="col-sm-6 m-0 p-0">
+                                <select name="allow_zero_trans" id="" class="form-control">
+                                    <option value="No">No</option>
+                                    <option value="Yes">Yes</option> 
+                                   
+                                </select>
+                            </div> -->
+                        </div>
+                        <div class="row container-fluid  p-2">
+                            <!-- <div class="col-sm-6 m-0 p-0"> <label for="i">Make voucher optional by default</label></div>
+                            <div class="col-sm-6 m-0 p-0">
+                                <select name="optional" id="i" class="form-control">
+                                    <option value="No">No</option>
+                                    <option value="Yes">Yes</option> 
+                                   
+                                </select>
+                            </div> -->
+                        </div>
+
+                        <div class="row container-fluid  p-2">
+                            <!-- <div class="col-sm-6 m-0 p-0"> <label for="j">Allow narration in voucher</label></div>
+                            <div class="col-sm-6 m-0 p-0">
+                                <select name="allow_naration_in_vou" id="j" class="form-control">
+                                    <option value="No">No</option>
+                                    <option value="Yes">Yes</option> 
+                                   
+                                </select>
+                            </div> -->
+                        </div>
+                        <div class="row container-fluid  p-2">
+                            <!-- <div class="col-sm-6 m-0 p-0"> <label for="k">Provide narration for each leadger voucher</label></div>
+                            <div class="col-sm-6 m-0 p-0">
+                                <select name="providenr" id="k" class="form-control">
+                                    <option value="No">No</option>
+                                    <option value="Yes">Yes</option> 
+                                   
+                                </select>
+                            </div> -->
+                        </div>
+                       
+                        
+
+                    </div>
+                    <div class="col-sm-4 m-0 p-4" style=" border-right: 1px solid rgba(128, 128, 128, 0.6);">
+                        <h5 class="text-center"><u>Mailling Detais</u></h5>
+                
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Name</label>
+                            <input type="text" class="form-control" id="formGroupExampleInput" aria-describedby="emailHelp" value="{{ j.mail_name }}" name="M_name">
+                          </div>
+                          <div class="form-group">
+                            <label for="exampleInputEmail1">Address</label>
+                            <input type="text" class="form-control" id="formGroupExampleInput" aria-describedby="emailHelp" value="{{ j.mail_address }}" name="M_address">
+                          </div>
+                          <div class="form-group">
+                            <label for="exampleInputEmail1">State</label>
+                            <input type="text" class="form-control" id="formGroupExampleInput" aria-describedby="emailHelp" value="{{ j.mail_state }}" name="M_state">
+                          </div>
+                          <div class="form-group">
+                            <label for="exampleInputEmail1">Country</label>
+                            <input type="text" class="form-control" id="formGroupExampleInput" aria-describedby="emailHelp" value="{{ j.mail_state }}" name="M_country">
+                          </div>
+                          <div class="form-group">
+                            <label for="exampleInputEmail1">Pincode</label>
+                            <input type="text" class="form-control" id="formGroupExampleInput" aria-describedby="emailHelp" value="{{ j.mail_pincode }}" name="M_pincode">
+                          </div>
+                    </div>
+                
+                    <div class="col-sm-3 m-0 p-4">
+                        <h5 class="text-center"><u>Banking Details</u></h5>
+
+                            {% if j.bank_details  == 'No' %}
+                        <div class="row container-fluid  p-2">
+                            <div class="col-sm-6 m-0 p-0"> <label><h6>Provide bank details</h6></label></div>
+                            <select name="B_details" id="aa" class=" form-control">
+                            <option value="1">NO</option>
+                            <option value="2">YES</option>
+                          </select>
+                          {% elif j.bank_details  == 'Yes' %}
+                          <select name="B_details" id="aa" class=" form-control">
+                            <option value="1">NO</option>
+                            <option value="2">YES</option>
+                          </select>
+                          {% endif %}
+                      </div><br><br>
+                      <h5><center><u>Tax registration Details</u></center></h5><br>
+                      <div class="form-group">
+                        <label>PAN/IT Number</label>
+                        <input type="text" class="form-control" id="formGroupExampleInput" aria-describedby="emailHelp" value="{{ j.pan_no }}"name="Pan_no">
+                      </div>
+                      <div class="row container-fluid  p-0">
+                        <div class="col-sm-6 m-0 p-0"> <label for="c">Registeration Type</label></div>
+                        <div class="col-sm-6 m-0 p-0">
+                          <select name="R_type" id="aa" class=" form-control">
+                            <option value="unknown" {% if j.registration_type == 'unknown' %}selected{% endif %}>Unknown</option>
+                            <option value="Composition" {% if j.registration_type == 'Composition' %}selected{% endif %}>Composition</option>
+                            <option value="Consumer" {% if j.registration_type == 'Consumer' %}selected{% endif %}>Consumer</option>
+                            <option value="Regular" {% if j.registration_type == 'Regular' %}selected{% endif %}>Regular</option>
+                            <option value="Unregistered" {% if j.registration_type == 'Unregistered' %}selected{% endif %}>Unregistered</option>
+                          </select>
+                        </div>
+                      </div>
+                      
+                    </div>
+                    <div class="form-group">
+                        <label>GSTIN/UIN</label>
+                        <input type="text" class="form-control" id="formGroupExampleInput" aria-describedby="emailHelp" value="{{ j.gst_in }}" name="Gst_in">
+                      </div>
+                      <div class="form-group">
+                        <label>Alter GST Details</label>
+                        <input type="text" class="form-control" id="formGroupExampleInput" aria-describedby="emailHelp" value="{{ j.alter }}" name="gst_alter">
+                      </div>
+                </div>
+                </div>
+                <div class="enter w-100 py-4"><button class="btn btn-info w-25">CREATE</button></div>   
+                
+            </form>
+        </div>  
+    {% endblock %}

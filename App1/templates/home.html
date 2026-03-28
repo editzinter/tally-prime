@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gateway of Tally</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-sans/style.css">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: 'Geist', sans-serif;
+            box-sizing: border-box;
+        }
+        html, body {
+            height: 100dvh;
+            background-color: #BCC3C8;
+            overflow: hidden;
+        }
+
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            background-color: #172026;
+            color: #F8F9FA;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            font-size: 12px;
+            font-weight: 500;
+            border-bottom: 1px solid #2E5085;
+        }
+        .top-bar .mono {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: #BCC3C8;
+            margin-left: auto;
+        }
+
+        /* ===== MAIN LAYOUT ===== */
+        .main-layout {
+            display: flex;
+            height: calc(100dvh - 28px - 22px); /* top bar + bottom bar */
+        }
+
+        /* ===== LEFT PANEL: Company Info ===== */
+        .left-panel {
+            width: 50%;
+            background-color: #F8F9FA;
+            border-right: 1px solid #2E5085;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .info-bar {
+            display: flex;
+            padding: 8px 12px;
+            border-bottom: 1px solid #2E5085;
+            gap: 16px;
+        }
+        .info-block {
+            flex: 1;
+        }
+        .info-block:last-child {
+            text-align: right;
+        }
+        .info-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: #2E5085;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .info-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #172026;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        /* Company Table */
+        .company-table-wrap {
+            flex: 1;
+            overflow-y: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            font-size: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: #2E5085;
+            padding: 4px 8px;
+            text-align: left;
+            background-color: #F8F9FA;
+            border-bottom: 1px solid #2E5085;
+            border-top: 1px solid #2E5085;
+            letter-spacing: 0.5px;
+        }
+        td {
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 4px 8px;
+            color: #172026;
+            border-bottom: 1px solid #BCC3C8;
+        }
+
+        /* ===== RIGHT PANEL: Gateway Menu ===== */
+        .right-panel {
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 16px;
+            overflow-y: auto;
+        }
+        .gateway-card {
+            background-color: #F8F9FA;
+            border: 1px solid #2E5085;
+            width: 320px;
+        }
+        .gateway-header {
+            background-color: #172026;
+            color: #F8F9FA;
+            text-align: center;
+            padding: 6px 8px;
+            font-size: 13px;
+            font-weight: 700;
+            border-bottom: 1px solid #2E5085;
+            letter-spacing: 0.5px;
+        }
+
+        /* Section Labels */
+        .section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 800;
+            color: #2E5085;
+            padding: 6px 12px 2px;
+            letter-spacing: 1px;
+            border-top: 1px solid #2E5085;
+        }
+        .section-label:first-of-type {
+            border-top: none;
+        }
+
+        /* Menu Items */
+        .menu-item {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background-color: transparent;
+            border: none;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-family: 'Geist', sans-serif;
+            color: #172026;
+            cursor: pointer;
+            text-decoration: none;
+            line-height: 1.4;
+        }
+        .menu-item:hover {
+            background-color: #F5B935;
+            color: #172026;
+        }
+        .menu-item.active {
+            background-color: #F5B935;
+            color: #172026;
+            font-weight: 700;
+        }
+        .menu-item .shortcut {
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        .menu-item-link {
+            text-decoration: none;
+            display: block;
+        }
+        .disabled-item {
+            color: #8A9199;
+            cursor: default;
+        }
+        .disabled-item:hover {
+            background-color: transparent;
+            color: #8A9199;
+        }
+
+        /* ===== BOTTOM BAR ===== */
+        .bottom-bar {
+            background-color: #F8F9FA;
+            color: #172026;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            border-top: 1px solid #2E5085;
+        }
+        .bottom-bar span {
+            margin-right: 16px;
+        }
+        .bottom-bar .key {
+            color: #2E5085;
+            font-weight: 700;
+        }
+
+        /* ===== MODAL OVERLAY ===== */
+        .modal-overlay {
+            background-color: rgba(188, 195, 200, 0.85);
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-panel {
+            background-color: #F8F9FA;
+            border: 1px solid #2E5085;
+            width: 340px;
+            position: relative;
+        }
+        .modal-title {
+            background-color: #172026;
+            color: #F8F9FA;
+            text-align: center;
+            padding: 6px 8px;
+            font-size: 13px;
+            font-weight: 700;
+            border-bottom: 1px solid #2E5085;
+        }
+        .modal-subtitle {
+            background-color: #F8F9FA;
+            color: #2E5085;
+            border-bottom: 1px solid #2E5085;
+            padding: 4px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .modal-close {
+            position: absolute;
+            top: 4px;
+            right: 8px;
+            font-size: 16px;
+            color: #BCC3C8;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .modal-close:hover {
+            color: #F5B935;
+        }
+        .modal-body {
+            padding: 4px 0;
+        }
+        .modal-section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 800;
+            color: #2E5085;
+            padding: 6px 12px 2px;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <span>Gateway of Tally</span>
+        <span class="mono">Tally Desktop v0.1.0</span>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="main-layout">
+
+        <!-- Left Panel: Company Data -->
+        <div class="left-panel">
+            <div class="info-bar">
+                <div class="info-block">
+                    <div class="info-label">CURRENT PERIOD</div>
+                    <div class="info-value">{{ current_period }}</div>
+                </div>
+                <div class="info-block">
+                    <div class="info-label">CURRENT DATE</div>
+                    <div class="info-value">{{ current_date }}</div>
+                </div>
+            </div>
+            <div class="company-table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>NAME OF COMPANY</th>
+                            <th>DATE OF LAST ENTRY</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if companies %}
+                        {% for c in companies %}
+                        <tr>
+                            <td>{{ c.componyname }}</td>
+                            <td>{{ c.booksbgn }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="2" style="color: #8A9199; text-align: center; padding: 16px;">No companies loaded</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Right Panel: Gateway Menu -->
+        <div class="right-panel">
+            <div class="gateway-card">
+                <div class="gateway-header">GATEWAY OF TALLY</div>
+
+                <div class="section-label">MASTERS</div>
+                <button class="menu-item open-modal"><span class="shortcut">C</span>reate</button>
+                <button class="menu-item open-modal"><span class="shortcut">A</span>lter</button>
+                <a href="group" class="menu-item-link"><button class="menu-item">C<span class="shortcut">h</span>arts of Accounts</button></a>
+
+                <div class="section-label">TRANSACTIONS</div>
+                <a href="accounting_vouchers" class="menu-item-link"><button class="menu-item"><span class="shortcut">V</span>ouchers</button></a>
+                <a href="daybook" class="menu-item-link"><button class="menu-item"><span class="shortcut">D</span>ay Book</button></a>
+
+                <div class="section-label">UTILITIES</div>
+                <button class="menu-item disabled-item">Banking</button>
+
+                <div class="section-label">REPORTS</div>
+                <a href="balancesheet" class="menu-item-link"><button class="menu-item"><span class="shortcut">B</span>alance Sheet</button></a>
+                <a href="profitloss" class="menu-item-link"><button class="menu-item"><span class="shortcut">P</span>rofit &amp; Loss A/C</button></a>
+                <a href="stocksummary" class="menu-item-link"><button class="menu-item"><span class="shortcut">S</span>tock Summary</button></a>
+                <a href="ratioanalysis" class="menu-item-link"><button class="menu-item"><span class="shortcut">R</span>atio Analysis</button></a>
+                <a href="displaymorereports" class="menu-item-link"><button class="menu-item">Display <span class="shortcut">M</span>ore Reports</button></a>
+
+                <div style="border-top: 1px solid #2E5085; margin-top: 4px;"></div>
+                <button class="menu-item disabled-item" style="padding: 6px 12px;"><span class="shortcut">Q</span>uit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="bottom-bar">
+        <span><a href="selectcompony" style="text-decoration:none;color:inherit;"><span class="key">F1:</span> Select Cmp</a></span>
+        <span><span class="key">F2:</span> Date</span>
+        <span><span class="key">F3:</span> Cmp Info</span>
+        <span><span class="key">F12:</span> Configure</span>
+    </div>
+
+    <!-- Master Creation Modal -->
+    <div class="modal-overlay" id="masterModal">
+        <div class="modal-panel">
+            <div class="modal-close" id="modalClose">&times;</div>
+            <div class="modal-title">MASTER CREATION</div>
+            <div class="modal-subtitle">LIST OF MASTERS</div>
+            <div class="modal-body">
+                <a href="changecompony" class="menu-item-link"><button class="menu-item">Change Company</button></a>
+
+                <div class="modal-section-label">ACCOUNTING MASTERS</div>
+                <a href="load_create_groups" class="menu-item-link"><button class="menu-item">Groups</button></a>
+                <a href="ledger" class="menu-item-link"><button class="menu-item">Ledgers</button></a>
+                <a href="voucher" class="menu-item-link"><button class="menu-item">Voucher Types</button></a>
+                <a href="currency" class="menu-item-link"><button class="menu-item">Currencies</button></a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Open modal
+        document.querySelectorAll('.open-modal').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.getElementById('masterModal').style.display = 'flex';
+            });
+        });
+
+        // Close modal
+        document.getElementById('modalClose').addEventListener('click', function() {
+            document.getElementById('masterModal').style.display = 'none';
+        });
+
+        // Close modal on overlay click
+        document.getElementById('masterModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.getElementById('masterModal').style.display = 'none';
+            }
+        });
+    </script>
+
+</body>
+</html>

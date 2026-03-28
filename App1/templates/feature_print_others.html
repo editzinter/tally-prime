@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block body %}
+{% load static %}
+<style>
+    .po-wrapper{display:flex;flex-direction:column;height:100%;background:#BCC3C8}.po-header{background:#F8F9FA;color:#172026;display:flex;justify-content:space-between;align-items:center;padding:2px 12px;font-size:13px;font-weight:700;border-bottom:1px solid #2E5085}.po-header .close-btn{cursor:pointer;padding:0 4px;font-size:16px;color:#172026;text-decoration:none}.po-header .close-btn:hover{color:#F5B935}.po-body{display:flex;flex:1;overflow:hidden}.po-main{background:#F8F9FA;flex:1;display:flex;flex-direction:column;overflow-y:auto;border-right:1px solid #2E5085}.po-form{padding:12px 16px}.po-row{display:flex;align-items:center;margin-bottom:6px;font-family:'JetBrains Mono',monospace;font-size:11px}.po-label{width:180px;color:#172026}.po-colon{padding:0 8px;color:#2E5085}.po-input{flex:1;background:transparent;border:none;border-bottom:1px solid #BCC3C8;padding:2px 4px;color:#172026;font-family:'JetBrains Mono',monospace;font-size:11px;outline:none}.po-input:focus{background:#FEFBEA;border-bottom:1px solid #F5B935}.po-section-title{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;color:#2E5085;letter-spacing:.5px;padding:8px 16px 4px;border-bottom:1px solid #2E5085}.po-preview-box{background:white;border:1px solid #BCC3C8;padding:24px;margin:0 16px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;min-height:200px}.po-preview-box h2{text-align:center;color:#172026;font-size:14px;margin:0 0 4px}.po-preview-box h3{text-align:center;color:#2E5085;font-size:12px;margin:0 0 16px;font-weight:400}.po-preview-box table{width:100%;border-collapse:collapse}.po-preview-box th{text-align:left;padding:4px 8px;border-bottom:2px solid #2E5085;font-size:10px;color:#2E5085}.po-preview-box td{padding:4px 8px;border-bottom:1px solid #BCC3C8;font-size:11px}.po-middle{flex:1;background:#BCC3C8}.po-sidebar{width:160px;background:#BCC3C8;border-left:1px solid #2E5085;display:flex;flex-direction:column;padding:4px;gap:4px}.sb-btn{background:#F8F9FA;border:1px solid #2E5085;color:#172026;font-family:'Geist',sans-serif;font-size:11px;text-align:left;padding:4px 8px;cursor:pointer;display:flex;text-decoration:none}.sb-key{font-family:'JetBrains Mono',monospace;font-weight:700;color:#2E5085;width:32px}.sb-btn:hover{background:#F5B935}.sb-btn.disabled{color:#BCC3C8;cursor:default}.sb-btn.disabled .sb-key{color:#BCC3C8}.sb-btn.disabled:hover{background:#F8F9FA}.po-footer{background:#F8F9FA;border-top:1px solid #2E5085;display:flex;align-items:center;padding:2px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;gap:24px;height:24px}.po-footer a{color:#172026;text-decoration:none}.po-footer .fk{color:#2E5085;font-weight:700}
+    @media print{.po-header,.po-sidebar,.po-footer,.po-middle,.po-form,.no-print{display:none !important}.po-body{display:block !important}.po-main{border:none !important}}
+</style>
+<div class="po-wrapper">
+    <div class="po-header"><span>Print Others</span><a href="javascript:history.go(-1);" class="close-btn">&times;</a></div>
+    <div class="po-body">
+        <div class="po-main">
+            <div class="po-section-title">SELECT REPORT TO PRINT</div>
+            <div class="po-form">
+                <div class="po-row"><div class="po-label">Report</div><div class="po-colon">:</div>
+                    <select class="po-input" id="poReport" style="cursor:pointer;background:#F8F9FA;" onchange="poChangeReport()">
+                        <option value="ledgers">Ledger List</option>
+                        <option value="groups">Group List</option>
+                        <option value="vouchers">Voucher Types</option>
+                        <option value="currencies">Currencies</option>
+                    </select></div>
+            </div>
+            <div class="po-preview-box" id="poPrintArea">
+                <h2>{{ company_name }}</h2>
+                <h3>Ledger List as at {{ report_date }}</h3>
+                <table>
+                    <thead><tr><th>NAME</th><th>UNDER</th><th>STATE</th><th>GSTIN</th></tr></thead>
+                    <tbody id="poBody">
+                        {% for ledger in ledgers %}
+                        <tr><td>{{ ledger.ledger_name }}</td><td>{{ ledger.under }}</td><td>{{ ledger.mail_state }}</td><td>{{ ledger.gst_in }}</td></tr>
+                        {% empty %}
+                        <tr><td colspan="4" style="color:#BCC3C8;text-align:center;">No data</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="po-middle"></div>
+        <div class="po-sidebar">
+            <a href="javascript:history.go(-1);" class="sb-btn"><span class="sb-key">Esc</span><span>Back</span></a>
+            <div class="sb-btn disabled"><span class="sb-key">F2</span></div><div class="sb-btn disabled"><span class="sb-key">F3</span></div><div class="sb-btn disabled"><span class="sb-key">F4</span></div><div class="sb-btn disabled"><span class="sb-key">F5</span></div><div class="sb-btn disabled"><span class="sb-key">F6</span></div><div class="sb-btn disabled"><span class="sb-key">F7</span></div><div class="sb-btn disabled"><span class="sb-key">F8</span></div><div class="sb-btn disabled"><span class="sb-key">F9</span></div><div class="sb-btn disabled"><span class="sb-key">F10</span></div>
+            <div style="flex:1;"></div>
+            <div class="sb-btn" onclick="window.print();"><span class="sb-key">P</span><span>Print</span></div>
+        </div>
+    </div>
+    <div class="po-footer"><a href="javascript:history.go(-1);"><span class="fk">Q:</span> Quit</a><a href="/home"><span class="fk">Esc:</span> Dashboard</a><a href="javascript:window.print();"><span class="fk">P:</span> Print</a></div>
+</div>
+<script>
+function poChangeReport(){/* Report type switching handled on reload since data is in context */}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')history.go(-1);if(e.key==='p'||e.key==='P'){e.preventDefault();window.print();}});
+</script>
+{% endblock %}

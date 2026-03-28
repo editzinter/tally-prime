@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block body %}
+    {% load static %}
+    <style>
+        /* Full-screen overlay that sits above EVERYTHING */
+        .cmp-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(188, 195, 200, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .cmp-modal {
+            background-color: #F8F9FA;
+            border: 1px solid #2E5085;
+            width: 380px;
+            font-family: 'Geist', sans-serif;
+        }
+        .cmp-modal-header {
+            background-color: #172026;
+            color: #F8F9FA;
+            padding: 6px 12px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #2E5085;
+        }
+        .cmp-close {
+            color: #BCC3C8;
+            text-decoration: none;
+            font-size: 18px;
+            line-height: 1;
+            cursor: pointer;
+        }
+        .cmp-close:hover {
+            color: #F5B935;
+        }
+        .cmp-body {
+            padding: 4px 0;
+        }
+        .cmp-item {
+            display: block;
+            padding: 5px 12px;
+            color: #172026;
+            text-decoration: none;
+            font-size: 12px;
+            font-family: 'Geist', sans-serif;
+            cursor: pointer;
+        }
+        .cmp-item:hover {
+            background-color: #F5B935;
+            color: #172026;
+            font-weight: 500;
+        }
+        .cmp-divider {
+            border: none;
+            border-top: 1px solid #2E5085;
+            margin: 4px 0;
+        }
+        .cmp-section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: #2E5085;
+            padding: 6px 12px 2px;
+            letter-spacing: 0.5px;
+        }
+    </style>
+
+<div class="cmp-overlay">
+    <div class="cmp-modal">
+        <div class="cmp-modal-header">
+            <span>LIST OF COMPANIES</span>
+            <a href="javascript:history.go(-1);" class="cmp-close">&times;</a>
+        </div>
+        <div class="cmp-body">
+            <a href="createcompony" class="cmp-item">Create Company</a>
+            <a href="updatecompony" class="cmp-item">Update Company</a>
+            <a href="branch" class="cmp-item">Shut Company</a>
+            <a href="home" class="cmp-item">Back</a>
+            
+            <hr class="cmp-divider">
+
+            {% if data %}
+                <div class="cmp-section-label">EXISTING COMPANIES</div>
+                {% for p in data %}
+                    <a href="branch" class="cmp-item">{{ p.componyname }}</a>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

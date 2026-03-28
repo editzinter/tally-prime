@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Day Book</title>
+    <style>
+        body { margin: 0; font-family: 'Geist', sans-serif; background-color: #BCC3C8; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        .header { background-color: #172026; color: #F8F9FA; padding: 6px 15px; font-size: 14px; display: flex; justify-content: space-between; font-weight: bold; }
+        .main-container { display: flex; flex: 1; height: 100%; overflow: hidden; }
+        .content-area { flex: 1; border-right: 2px solid #a3c2e0; display: flex; flex-direction: column; background: #fff; }
+        .inner-header { background: #fdcf61; padding: 4px; font-size: 14px; font-weight: bold; border-bottom: 2px solid #8baabd; text-align: center;}
+        .vch-top-bar { display: flex; justify-content: space-between; padding: 8px 15px; background: #fffcf0; border-bottom: 1px solid #c0c0c0; font-size: 13px; font-weight: bold; color: #2E5085; }
+        .main-grid { flex: 1; border-collapse: collapse; margin-top: 0; width: 100%;}
+        .main-grid th { border-bottom: 1px solid #2E5085; border-top: 1px solid #2E5085; border-bottom: 1px solid #2E5085; border-top: 1px solid #2E5085; padding: 8px; font-size: 13px; text-align: left; color: #2E5085; background: #fdfdfd; font-weight: normal;}
+        .main-grid td { border-bottom: 1px solid #eee; padding: 6px 8px; font-size: 13px; color: #333;}
+        .main-grid tr:hover { background-color: #F5B935; cursor: pointer; }
+        
+        .right-panel { width: 180px; background-color: #BCC3C8; display: flex; flex-direction: column; padding-top: 0;}
+        .right-panel .btn-shortcut { background: transparent; border: none; border-bottom: 1px solid #2E5085; padding: 8px 10px; text-align: left; font-size: 12px; cursor: pointer; color: #172026; display: flex; justify-content: space-between; }
+        .right-panel .btn-shortcut:hover { background-color: #F5B935; color: #F8F9FA; }
+        .shortcut-key { color: #2E5085; font-weight: bold; }
+        .btn-shortcut:hover .shortcut-key { color: #F8F9FA; }
+        
+        .footer-panel { background-color: #172026; color: #F8F9FA; font-size: 12px; padding: 5px 15px; text-align: center;}
+        .back-btn { background: none; border: 1px solid white; color: #F8F9FA; cursor: pointer; padding: 2px 8px; border-radius: 0px;}
+    </style>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-sans/style.css">
+
+</head>
+<body>
+    <div class="header">
+        <div>TallyPrime - Day Book</div>
+        <button class="back-btn" onclick="window.location.href='/'">ESC: Quit</button>
+    </div>
+    <div class="main-container">
+        <div class="content-area">
+            <div class="inner-header">Day Book</div>
+            <div class="vch-top-bar">
+                <div></div>
+                <div style="text-align: right;">1-Apr-23 to 30-Apr-23</div>
+            </div>
+            <table class="main-grid">
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">Date</th>
+                        <th style="width: 45%;">Particulars</th>
+                        <th style="width: 15%;">Vch Type</th>
+                        <th style="width: 10%;">Vch No.</th>
+                        <th style="width: 10%; text-align: right;">Debit Amount</th>
+                        <th style="width: 10%; text-align: right;">Credit Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for txn in txns %}
+                        {% for entry in txn.entries.all %}
+                        <tr>
+                            <td>{{ txn.date|date:"j-M-y" }}</td>
+                            <td style="font-weight: bold;">{{ entry.ledger.ledger_name }}</td>
+                            <td>{{ txn.voucher_type }}</td>
+                            <td>{{ txn.voucher_number }}</td>
+                            <td style="text-align: right;">{% if entry.entry_type == 'Dr' %}{{ entry.amount }}{% endif %}</td>
+                            <td style="text-align: right;">{% if entry.entry_type == 'Cr' %}{{ entry.amount }}{% endif %}</td>
+                        </tr>
+                        {% endfor %}
+                    {% empty %}
+                        <tr><td colspan="6" style="text-align:center; padding:20px;">No Vouchers Entered</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="right-panel">
+            <button class="btn-shortcut"><span>Period</span> <span class="shortcut-key">F2</span></button>
+            <button class="btn-shortcut"><span>Company</span> <span class="shortcut-key">F3</span></button>
+            <button class="btn-shortcut"><span>Change Vch</span> <span class="shortcut-key">F4</span></button>
+            <button class="btn-shortcut"><span>Exception</span> <span class="shortcut-key">J</span></button>
+        </div>
+    </div>
+    <div class="footer-panel">Tally Solutions Pvt. Ltd., 1988-2023</div>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Trial Balance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-sans/style.css">
+    <style>
+        * { padding: 0; margin: 0; font-family: 'Geist', sans-serif; box-sizing: border-box; }
+        html, body { height: 100vh; background-color: #BCC3C8; overflow: hidden; }
+
+        .header { background-color: #172026; color: #F8F9FA; padding: 6px 15px; font-size: 14px; display: flex; justify-content: space-between; font-weight: bold; }
+        .main-container { display: flex; flex: 1; height: calc(100vh - 32px - 28px); overflow: hidden; }
+        .content-area { flex: 1; border-right: 2px solid #a3c2e0; display: flex; flex-direction: column; background: #fffcf0; }
+        .inner-header { background: #fdcf61; padding: 4px; font-size: 14px; font-weight: bold; border-bottom: 2px solid #8baabd; text-align: center; }
+        .vch-top-bar { display: flex; justify-content: space-between; padding: 8px 15px; background: #fffcf0; border-bottom: 1px solid #c0c0c0; font-size: 13px; font-weight: bold; color: #2E5085; }
+
+        .tb-wrap { flex: 1; overflow-y: auto; padding: 0; }
+        .tb-table { width: 100%; border-collapse: collapse; }
+        .tb-table th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; color: #2E5085; padding: 6px 12px; text-align: left; border-bottom: 2px solid #2E5085; background: #fffcf0; position: sticky; top: 0; }
+        .tb-table th:nth-child(2), .tb-table th:nth-child(3) { text-align: right; }
+        .tb-table td { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 5px 12px; color: #172026; border-bottom: 1px solid #e0e0e0; }
+        .tb-table td:nth-child(2), .tb-table td:nth-child(3) { text-align: right; font-weight: 500; }
+        .tb-table tr:hover { background: #FEFBEA; }
+        .tb-total { font-weight: 700; border-top: 2px solid #2E5085; background: #F8F9FA; }
+        .tb-total td { font-weight: 700; border-bottom: 2px solid #2E5085; }
+
+        .right-panel { width: 180px; background-color: #BCC3C8; display: flex; flex-direction: column; }
+        .btn-shortcut { background: transparent; border: none; border-bottom: 1px solid #2E5085; padding: 8px 10px; text-align: left; font-size: 12px; cursor: pointer; color: #172026; display: flex; justify-content: space-between; text-decoration: none; }
+        .btn-shortcut:hover { background-color: #F5B935; color: #F8F9FA; }
+        .shortcut-key { color: #2E5085; font-weight: bold; }
+        .btn-shortcut:hover .shortcut-key { color: #F8F9FA; }
+
+        .footer-panel { background-color: #172026; color: #F8F9FA; font-size: 12px; padding: 5px 15px; text-align: center; }
+        .back-btn { background: none; border: 1px solid white; color: #F8F9FA; cursor: pointer; padding: 2px 8px; }
+
+        .empty-msg { text-align: center; padding: 40px; color: #8A9199; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>TallyPrime - Trial Balance</div>
+        <button class="back-btn" onclick="window.location.href='/home'">ESC: Quit</button>
+    </div>
+    <div class="main-container">
+        <div class="content-area">
+            <div class="inner-header">Trial Balance</div>
+            <div class="vch-top-bar">
+                <div style="color: #172026;">{{ company_name }}</div>
+                <div style="text-align: right;">{{ period }}</div>
+            </div>
+            <div class="tb-wrap">
+                {% if entries %}
+                <table class="tb-table">
+                    <thead>
+                        <tr>
+                            <th>PARTICULARS</th>
+                            <th>DEBIT (₹)</th>
+                            <th>CREDIT (₹)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in entries %}
+                        <tr>
+                            <td>{{ entry.name }}</td>
+                            <td>{% if entry.debit > 0 %}{{ entry.debit|floatformat:2 }}{% endif %}</td>
+                            <td>{% if entry.credit > 0 %}{{ entry.credit|floatformat:2 }}{% endif %}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr class="tb-total">
+                            <td>TOTAL</td>
+                            <td>{{ total_debit|floatformat:2 }}</td>
+                            <td>{{ total_credit|floatformat:2 }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="empty-msg">
+                    <div style="font-size: 24px; margin-bottom: 8px;">📋</div>
+                    <div>No ledger entries found.</div>
+                    <div style="margin-top: 4px; color: #BCC3C8;">Record voucher transactions to see the Trial Balance.</div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="right-panel">
+            <a href="/home" class="btn-shortcut"><span>Back</span><span class="shortcut-key">Esc</span></a>
+            <button class="btn-shortcut"><span>Detailed</span><span class="shortcut-key">Alt+F5</span></button>
+            <button class="btn-shortcut"><span>Period</span><span class="shortcut-key">F2</span></button>
+            <button class="btn-shortcut"><span>Company</span><span class="shortcut-key">F3</span></button>
+        </div>
+    </div>
+    <div class="footer-panel">TallyPrime</div>
+    <script>
+        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') window.location.href = '/home'; });
+    </script>
+</body>
+</html>

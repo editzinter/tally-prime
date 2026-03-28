@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Balance Sheet</title>
+    <style>
+        body { margin: 0; font-family: 'Geist', sans-serif; background-color: #BCC3C8; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        .header { background-color: #172026; color: #F8F9FA; padding: 6px 15px; font-size: 14px; display: flex; justify-content: space-between; font-weight: bold; }
+        .main-container { display: flex; flex: 1; height: 100%; overflow: hidden; }
+        .content-area { flex: 1; border-right: 2px solid #a3c2e0; display: flex; flex-direction: column; background: #fffcf0; }
+        .inner-header { background: #fdcf61; padding: 4px; font-size: 14px; font-weight: bold; border-bottom: 2px solid #8baabd; text-align: center;}
+        .vch-top-bar { display: flex; justify-content: space-between; padding: 8px 15px; background: #fffcf0; border-bottom: 1px solid #c0c0c0; font-size: 13px; font-weight: bold; color: #2E5085; }
+        
+        .bs-grid { display: flex; flex: 1; }
+        .bs-col { flex: 1; display: flex; flex-direction: column; border-right: 1px solid #ccc; padding: 10px; }
+        .bs-col:last-child { border-right: none; }
+        .bs-title { color: #2E5085; font-weight: bold; font-size: 14px; border-bottom: 1px solid #ccc; padding-bottom: 5px; display: flex; justify-content: space-between;}
+        
+        .bs-item { display: flex; justify-content: space-between; padding: 5px 0; font-size: 13px; font-weight: bold; }
+        .bs-subitem { display: flex; justify-content: space-between; padding: 5px 0 5px 15px; font-size: 13px; color: #444; }
+        
+        .right-panel { width: 180px; background-color: #BCC3C8; display: flex; flex-direction: column; padding-top: 0;}
+        .right-panel .btn-shortcut { background: transparent; border: none; border-bottom: 1px solid #2E5085; padding: 8px 10px; text-align: left; font-size: 12px; cursor: pointer; color: #172026; display: flex; justify-content: space-between; }
+        .right-panel .btn-shortcut:hover { background-color: #F5B935; color: #F8F9FA; }
+        .shortcut-key { color: #2E5085; font-weight: bold; }
+        .btn-shortcut:hover .shortcut-key { color: #F8F9FA; }
+        
+        .footer-panel { background-color: #172026; color: #F8F9FA; font-size: 12px; padding: 5px 15px; text-align: center;}
+        .back-btn { background: none; border: 1px solid white; color: #F8F9FA; cursor: pointer; padding: 2px 8px; border-radius: 0px;}
+    </style>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-sans/style.css">
+
+</head>
+<body>
+    <div class="header">
+        <div>TallyPrime - Balance Sheet</div>
+        <button class="back-btn" onclick="window.location.href='/'">ESC: Quit</button>
+    </div>
+    <div class="main-container">
+        <div class="content-area">
+            <div class="inner-header">Balance Sheet</div>
+            <div class="vch-top-bar">
+                <div style="color: #172026;">Company Base Name</div>
+                <div style="text-align: right;">As 1-Apr-23</div>
+            </div>
+            
+            <div class="bs-grid">
+                <!-- Liabilities -->
+                <div class="bs-col">
+                    <div class="bs-title"><span>Liabilities</span> <span>as at 1-Apr-23</span></div>
+                    
+                    {% for item in liabilities %}
+                    <div class="bs-subitem"><span>{{ item.name }}</span> <span>{{ item.amount }}</span></div>
+                    {% empty %}
+                    <div class="bs-subitem" style="justify-content:center; color:#999;">No Liabilities</div>
+                    {% endfor %}
+                    
+                    <div style="flex: 1;"></div>
+                    <div class="bs-item" style="border-top: 2px solid #555; padding-top: 10px;"><span>Total</span> <span>{{ total_liab }}</span></div>
+                </div>
+                
+                <!-- Assets -->
+                <div class="bs-col">
+                    <div class="bs-title"><span>Assets</span> <span>as at 1-Apr-23</span></div>
+                    
+                    {% for item in assets %}
+                    <div class="bs-subitem"><span>{{ item.name }}</span> <span>{{ item.amount }}</span></div>
+                    {% empty %}
+                    <div class="bs-subitem" style="justify-content:center; color:#999;">No Assets</div>
+                    {% endfor %}
+                    
+                    <div style="flex: 1;"></div>
+                    <div class="bs-item" style="border-top: 2px solid #555; padding-top: 10px;"><span>Total</span> <span>{{ total_assets }}</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="right-panel">
+            <button class="btn-shortcut"><span>Detailed</span> <span class="shortcut-key">Alt+F5</span></button>
+            <button class="btn-shortcut"><span>Period</span> <span class="shortcut-key">F2</span></button>
+            <button class="btn-shortcut"><span>Company</span> <span class="shortcut-key">F3</span></button>
+        </div>
+    </div>
+    <div class="footer-panel">Tally Solutions Pvt. Ltd., 1988-2023</div>
+</body>
+</html>

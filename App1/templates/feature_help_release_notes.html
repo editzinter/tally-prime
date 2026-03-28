@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block body %}
+{% load static %}
+<style>
+    .rn-wrapper{display:flex;flex-direction:column;height:100%;background:#BCC3C8}.rn-header{background:#F8F9FA;color:#172026;display:flex;justify-content:space-between;align-items:center;padding:2px 12px;font-size:13px;font-weight:700;border-bottom:1px solid #2E5085}.rn-header .close-btn{cursor:pointer;padding:0 4px;font-size:16px;color:#172026;text-decoration:none}.rn-header .close-btn:hover{color:#F5B935}.rn-body{display:flex;flex:1;overflow:hidden}.rn-main{background:#F8F9FA;flex:1;display:flex;flex-direction:column;overflow-y:auto;border-right:1px solid #2E5085}
+    .rn-content{padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#172026;line-height:1.6}
+    .rn-version{border:1px solid #2E5085;margin:8px 16px}.rn-version-header{background:#172026;color:#F8F9FA;padding:4px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;display:flex;justify-content:space-between}.rn-version-body{padding:8px 12px;background:#F8F9FA;font-family:'JetBrains Mono',monospace;font-size:11px}
+    .rn-tag{display:inline-block;padding:1px 6px;font-size:9px;font-weight:700;margin-right:4px;font-family:'JetBrains Mono',monospace}.rn-new{background:#2E5085;color:#F8F9FA}.rn-fix{background:#F5B935;color:#172026}.rn-imp{background:#172026;color:#F8F9FA}
+    .rn-middle{flex:1;background:#BCC3C8}.rn-sidebar{width:160px;background:#BCC3C8;border-left:1px solid #2E5085;display:flex;flex-direction:column;padding:4px;gap:4px}
+    .sb-btn{background:#F8F9FA;border:1px solid #2E5085;color:#172026;font-family:'Geist',sans-serif;font-size:11px;text-align:left;padding:4px 8px;cursor:pointer;display:flex;text-decoration:none}.sb-key{font-family:'JetBrains Mono',monospace;font-weight:700;color:#2E5085;width:32px}.sb-btn:hover{background:#F5B935}.sb-btn.disabled{color:#BCC3C8;cursor:default}.sb-btn.disabled .sb-key{color:#BCC3C8}.sb-btn.disabled:hover{background:#F8F9FA}
+    .rn-footer{background:#F8F9FA;border-top:1px solid #2E5085;display:flex;align-items:center;padding:2px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;gap:24px;height:24px}.rn-footer a{color:#172026;text-decoration:none}.rn-footer .fk{color:#2E5085;font-weight:700}
+</style>
+
+<div class="rn-wrapper">
+    <div class="rn-header"><span>Release Notes</span><a href="javascript:history.go(-1);" class="close-btn">&times;</a></div>
+    <div class="rn-body">
+        <div class="rn-main">
+            <div class="rn-version">
+                <div class="rn-version-header"><span>Version 5.0 — Release 1.0</span><span>24-Mar-2026</span></div>
+                <div class="rn-version-body">
+                    <div style="margin-bottom:4px;"><span class="rn-tag rn-new">NEW</span> TallyPrime desktop application with Tauri framework</div>
+                    <div style="margin-bottom:4px;"><span class="rn-tag rn-new">NEW</span> Modern utilitarian terminal design system</div>
+                    <div style="margin-bottom:4px;"><span class="rn-tag rn-new">NEW</span> Complete Data menu: Backup, Restore, Split, Data Path</div>
+                    <div style="margin-bottom:4px;"><span class="rn-tag rn-new">NEW</span> Exchange menu: Data Sync, Config, Online Access</div>
+                    <div style="margin-bottom:4px;"><span class="rn-tag rn-new">NEW</span> Import menu: Masters, Transactions, Bank, Manage, Config</div>
+                    <div style="margin-bottom:4px;"><span class="rn-tag rn-new">NEW</span> Export menu: Current, Others, Masters, Transactions, Config</div>
+                    <div style="margin-bottom:4px;"><span class="rn-tag rn-new">NEW</span> Share menu: Email current/batch reports, SMTP config</div>
+                    <div style="margin-bottom:4px;"><span class="rn-tag rn-new">NEW</span> Print menu: Current/batch printing, printer config</div>
+                    <div style="margin-bottom:4px;"><span class="rn-tag rn-imp">IMP</span> Viewport containment — content stays within window bounds</div>
+                </div>
+            </div>
+            <div class="rn-version">
+                <div class="rn-version-header"><span>Version 4.0 — Initial Release</span><span>01-Mar-2026</span></div>
+                <div class="rn-version-body">
+                    <div style="margin-bottom:4px;"><span class="rn-tag rn-new">NEW</span> Gateway of Tally main dashboard</div>
+                    <div style="margin-bottom:4px;"><span class="rn-tag rn-new">NEW</span> Company creation and management</div>
+                    <div style="margin-bottom:4px;"><span class="rn-tag rn-new">NEW</span> Ledger, Group, Currency, and Voucher modules</div>
+                    <div style="margin-bottom:4px;"><span class="rn-tag rn-fix">FIX</span> Browser-based rendering in Tauri WebView</div>
+                </div>
+            </div>
+        </div>
+        <div class="rn-middle"></div>
+        <div class="rn-sidebar">
+            <a href="javascript:history.go(-1);" class="sb-btn"><span class="sb-key">Esc</span><span>Back</span></a>
+            <div class="sb-btn disabled"><span class="sb-key">F2</span></div><div class="sb-btn disabled"><span class="sb-key">F3</span></div><div class="sb-btn disabled"><span class="sb-key">F4</span></div><div class="sb-btn disabled"><span class="sb-key">F5</span></div><div class="sb-btn disabled"><span class="sb-key">F6</span></div><div class="sb-btn disabled"><span class="sb-key">F7</span></div><div class="sb-btn disabled"><span class="sb-key">F8</span></div><div class="sb-btn disabled"><span class="sb-key">F9</span></div><div class="sb-btn disabled"><span class="sb-key">F10</span></div>
+            <div style="flex:1;"></div>
+            <div class="sb-btn disabled"><span class="sb-key">F12</span></div>
+        </div>
+    </div>
+    <div class="rn-footer"><a href="javascript:history.go(-1);"><span class="fk">Q:</span> Quit</a><a href="/home"><span class="fk">Esc:</span> Dashboard</a></div>
+</div>
+<script>document.addEventListener('keydown',function(e){if(e.key==='Escape')history.go(-1);});</script>
+{% endblock %}

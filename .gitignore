@@ -1,0 +1,35 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+db.sqlite3
+
+# Node
+node_modules/
+
+# Tauri build artifacts
+tally-desktop/src-tauri/target/
+tally-desktop/src-tauri/gen/
+tally-desktop/src-tauri/backend/
+
+# PyInstaller
+build/
+dist/
+*.spec
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Agents/AI
+.agents/
+.gemini/
+
+# Misc
+*.log
+*.tmp

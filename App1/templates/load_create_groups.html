@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body %}
+<style>
+    .close {
+        position: absolute;
+        top: 3px;
+        right: 8px;
+        font-size: 25px;
+        color: #F8F9FA;
+        transform: rotate(45deg);
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .flexy{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+.hide{
+    display:none;
+}
+
+
+</style>
+
+
+
+<div class="row container-fluid p-0 mx-0" style="height: 100%; max-height: 100%; overflow-y: auto;">
+    <div class="col-sm-3 m-0 p-0"></div>
+    <div class="col-sm-6 m-0 p-0" style=" background-color: #F8F9FA;">
+        <a href="javascript:history.go(-1);" class="close">+</a>
+    <h6 style class="bg-info text-light p-2">Group Creation</h6>
+
+    
+
+<form id="myForm" action="{% url 'create_group' %}" method="post" class="p-5">
+    {% csrf_token %}
+   
+                    <div class="row container-fluid  p-2 m-0">
+                        <div class="col-sm-6 m-0 p-0"> <label for="gname">Name :</label></div>
+                        <div class="col-sm-6 m-0 p-0"><input type="text" id="gname"  name="gname" class="form-control" placeholder="" required></div> 
+                    </div>
+
+                    <div class="row container-fluid  p-2 m-0">
+                        <div class="col-sm-6 m-0 p-0"> <label for="alia">(Alias) :</label></div>
+                        <div class="col-sm-6 m-0 p-0"><input type="text" id="alia" name="alia"class="form-control" placeholder=""></div> 
+                    </div>
+
+                    <div class="row container-fluid  p-2 m-0">
+                        <div class="col-sm-6 m-0 p-0"> <label for="under">Under :</label></div>
+                        <div class="col-sm-6 m-0 p-0">
+                            <select id="under" name="und" class="form-control " required onchange="showunder()">
+                                <option value="">----Select-----</option>
+                                <option value="Primary">Primary*</option>
+
+                                    <option value="BankAccount1">BankAccouts</option>
+                                    <option value="Bank_OCC_AC">Bank OCC A/c</option>
+                                    <option value="Bankod1">Bank OD A/c</option>
+                                    <option value="Bank_Account">Branch Divisions</option>
+                                    <option value="Bank_Account">Capital Amount</option>
+                                    <option value="Bank_Account">Cash in Hand</option>
+                                    <option value="curntasts1">Current Assets</option>
+                                    <option value="current_liabilities">Current Liabilities</option>
+                                    <option value="Bank_Account">Deposits (Asset)</option>
+                                    <option value="dirctexpncs1">Direct Expenses</option>
+                                    <option value="dirctincome">Direct Incomes</option>
+                                    <option value="dutiesAndtax">Duties and Taxes</option>
+                                    <option value="Expences_Direct">Expenses(Direct)</option>
+                                    <option value="Expences_Indirect">Expenses(Indirect)</option>
+                                    <option value="Fixed_Assets">Fixed Assets</option>
+                                    <option value="income_direct">Income (Direct)</option>
+                                    <option value="income_Indirect">Income (Indirect)</option>
+                                    <option value="Investments">Investments</option>
+                                    <option value="loans_advance">Loans & Advances (Asset)</option>
+                                    <option value="Loans_liability">Loans (Liability)</option>
+                                    <option value="Mis_Expenses">Misc. Expenses (Asset)</option>
+                                    <option value="provisions">provisions</option>
+                                    <option value="Purchase_Account">Purchase Accounts</option>
+                                    <option value="retained">Retained Earnings</option>
+                                    <option value="Sales_Account">Sales Accounts</option>
+                                    <option value="Secured_loans">Secured Loans</option>
+                                    <option value="stock">Stock-in-Hand</option>
+                                    <option value="Sundry_Creditors">Sundry Creditors</option>
+                                    <option value="Sundry_Debtors">Sundry Debtors</option>
+                                    <option value="Suspence">Suspence A/c</option>
+                                    <option value="Unsecured_loans">Unsecured Loans</option>   
+        
+                                {% for i in grp %}
+        
+                                <option value="{{i.name}}">{{i.name}}</option>
+        
+                                {% endfor %} 
+                            </select>
+
+                        </div> 
+                    </div>
+
+                    <div class="row container-fluid  p-2 m-0 hide" id="nature0" >
+                        <div class="col-sm-6 m-0 p-0"> <label for="meth"> Nature of group:</label></div>
+                        <div class="col-sm-6 m-0 p-0">
+                            <select id="nature" name="nature" class=" form-control" required onchange="shownature()">
+                                <option value="null">---Select---</option>
+                                <option value="Assets">Assets</option>
+                                <option value="Expenses">Expenses</option>
+                                <option value="Income">Income</option>
+                                <option value="Liabilities">Liabilities</option>
+
+                            </select>
+                        </div> 
+                    </div>
+
+                    <div class="row container-fluid  p-2 m-0 hide" id="gross_profit0">
+                        <div class="col-sm-6 m-0 p-0"> <label for="gname">Does it affect gross profit :</label></div>
+                        <div class="col-sm-6 m-0 p-0">
+                            <select id="gross_profit"  name="gross_profit"class=" form-control">
+                                <option value="Yes">Yes</option>
+                                <option value="No" selected>No</option>
+                            </select>
+                        </div> 
+                    </div>
+
+
+                    <div class="row container-fluid  p-2 m-0">
+                        <div class="col-sm-6 m-0 p-0"> <label for="subled">Groups behaves like a sub-ledger:</label></div>
+                        <div class="col-sm-6 m-0 p-0">
+                            <select id="subled" name="subled" class=" form-control">
+                                <option value="Yes">Yes</option>
+                                <option value="No" selected>No</option>
+                            </select>
+                        </div> 
+                    </div>
+
+
+                    
+
+
+                    <div class="row container-fluid  p-2 m-0">
+                        <div class="col-sm-6 m-0 p-0"> <label for="nett">Nett Debit/Credit Balance for Reporting:</label></div>
+                        <div class="col-sm-6 m-0 p-0">
+                            <select id="nett" name="nee" class=" form-control">
+                                <option value="Yes">Yes</option>
+                                <option value="No" selected>No</option>
+                            </select>
+                        </div> 
+                    </div>
+
+                    <div class="row container-fluid  p-2 m-0">
+                        <div class="col-sm-6 m-0 p-0"> <label for="cal">Used for
+                            calculation
+                            <br><small style="font-size: 10px;">(for example:taxes,discounts,Sales invoice
+                                entries)</small>:</label></div>
+                        <div class="col-sm-6 m-0 p-0">
+                            <select id="cal" name="cal" class=" form-control">
+                                <option value="Yes">Yes</option>
+                                <option value="No" selected>No</option>
+                            </select>
+                        </div> 
+                    </div>
+
+                    <div class="row container-fluid  p-2 m-0 hide" id="meth0">
+                        <div class="col-sm-6 m-0 p-0"> <label for="meth"> Method to allocate when used in purchase invoice :</label></div>
+                        <div class="col-sm-6 m-0 p-0">
+                            <select id="meth" name="meth" class=" form-control">
+                                <option value="" selected>Not Applicable</option>
+                                <option value="Appropriate by Qty">Appropriate by Qty</option>
+                                <option value="Appropriate by Value">Appropriate by Value</option>
+                            </select>
+                        </div> 
+                    </div>
+
+
+
+                    <div class="flexy w-100 py-4"><button id="cbtn" type="submit" class="btn btn-info w-50">Create</button></div>
+    
+</form>
+
+</div>
+</div>
+<div class="col-sm-3  m-0 p-0"></div>
+
+</div> 
+
+<script>
+function showunder(){
+    var status = document.getElementById("under");
+    var a = status.value;
+    console.log(a);
+    if( a == "Primary" ){
+        console.log(a);
+        document.getElementById('nature0').style.display = "flex";
+    }
+    else{
+        document.getElementById('nature0').style.display = "none";
+    }
+    }
+</script>
+
+<script>
+    function shownature(){
+        var status = document.getElementById("nature");
+        var a = status.value;
+        console.log(a);
+        if( a == "Assets"){
+            console.log(a);
+            document.getElementById('meth0').style.display = "flex";
+            document.getElementById('gross_profit0').style.display = "none";
+        }
+            
+        else if(a == "Liabilities"){
+            document.getElementById('meth0').style.display = "flex";
+            document.getElementById('gross_profit0').style.display = "none";
+
+            
+           
+        }
+        else if(a == "Expenses"){
+            document.getElementById('meth0').style.display = "none";
+            document.getElementById('gross_profit0').style.display = "flex";
+        }
+        else if(a == "Income"){
+            document.getElementById('meth0').style.display = "none";
+            document.getElementById('gross_profit0').style.display = "flex";
+
+        }
+        else{
+            document.getElementById('meth0').style.display = "none";
+            document.getElementById('gross_profit0').style.display = "none";
+        }
+
+
+    }
+   
+
+</script>
+
+
+{% endblock body %}

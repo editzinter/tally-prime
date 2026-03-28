@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block body %}
+{% load static %}
+<style>
+    .sp-wrapper{display:flex;flex-direction:column;height:100%;background:#BCC3C8}.sp-header{background:#F8F9FA;color:#172026;display:flex;justify-content:space-between;align-items:center;padding:2px 12px;font-size:13px;font-weight:700;border-bottom:1px solid #2E5085}.sp-header .close-btn{cursor:pointer;padding:0 4px;font-size:16px;color:#172026;text-decoration:none}.sp-header .close-btn:hover{color:#F5B935}.sp-body{display:flex;flex:1;overflow:hidden}.sp-main{background:#F8F9FA;flex:1;display:flex;flex-direction:column;overflow-y:auto;border-right:1px solid #2E5085}.sp-form{padding:12px 16px}.sp-row{display:flex;align-items:center;margin-bottom:6px;font-family:'JetBrains Mono',monospace;font-size:11px}.sp-label{width:220px;color:#172026}.sp-colon{padding:0 8px;color:#2E5085}.sp-input{flex:1;background:transparent;border:none;border-bottom:1px solid #BCC3C8;padding:2px 4px;color:#172026;font-family:'JetBrains Mono',monospace;font-size:11px;outline:none}.sp-input:focus{background:#FEFBEA;border-bottom:1px solid #F5B935}.sp-section-title{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;color:#2E5085;letter-spacing:.5px;padding:8px 16px 4px;border-bottom:1px solid #2E5085}.sp-info{font-family:'JetBrains Mono',monospace;font-size:11px;color:#172026;padding:12px 16px;line-height:1.8}.sp-middle{flex:1;background:#BCC3C8}.sp-sidebar{width:160px;background:#BCC3C8;border-left:1px solid #2E5085;display:flex;flex-direction:column;padding:4px;gap:4px}.sb-btn{background:#F8F9FA;border:1px solid #2E5085;color:#172026;font-family:'Geist',sans-serif;font-size:11px;text-align:left;padding:4px 8px;cursor:pointer;display:flex;text-decoration:none}.sb-key{font-family:'JetBrains Mono',monospace;font-weight:700;color:#2E5085;width:32px}.sb-btn:hover{background:#F5B935}.sb-btn.disabled{color:#BCC3C8;cursor:default}.sb-btn.disabled .sb-key{color:#BCC3C8}.sb-btn.disabled:hover{background:#F8F9FA}.sp-footer{background:#F8F9FA;border-top:1px solid #2E5085;display:flex;align-items:center;padding:2px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;gap:24px;height:24px}.sp-footer a{color:#172026;text-decoration:none}.sp-footer .fk{color:#2E5085;font-weight:700}.sp-status{padding:8px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;border-top:1px solid #2E5085;color:#2E5085}.sp-action-btn{background:#2E5085;color:#F8F9FA;border:1px solid #172026;padding:4px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;margin-top:8px}.sp-action-btn:hover{background:#F5B935;color:#172026}
+</style>
+<div class="sp-wrapper">
+    <div class="sp-header"><span>Split Company Data</span><a href="javascript:history.go(-1);" class="close-btn">&times;</a></div>
+    <div class="sp-body">
+        <div class="sp-main">
+            <div class="sp-section-title">SPLIT COMPANY DATA BY FINANCIAL YEAR</div>
+            <div class="sp-form">
+                <div class="sp-row"><div class="sp-label">Source Company</div><div class="sp-colon">:</div>
+                    <select class="sp-input" id="spCompany" style="cursor:pointer;background:#F8F9FA;">
+                        {% for c in companies %}<option value="{{ c.componyname }}">{{ c.componyname }}</option>{% empty %}<option>No companies found</option>{% endfor %}
+                    </select></div>
+                <div class="sp-row"><div class="sp-label">Split From Date</div><div class="sp-colon">:</div>
+                    <input type="date" class="sp-input" id="spFrom" style="cursor:pointer;background:#F8F9FA;"></div>
+                <div class="sp-row"><div class="sp-label">Split To Date</div><div class="sp-colon">:</div>
+                    <input type="date" class="sp-input" id="spTo" style="cursor:pointer;background:#F8F9FA;"></div>
+                <button class="sp-action-btn" onclick="spSplit()" id="spBtn">Split Company Data</button>
+            </div>
+            <div class="sp-info">
+                <strong>About Split:</strong><br>
+                This feature splits your company data into separate financial years.<br>
+                All masters and transactions within the specified date range will be <br>
+                extracted and exported as a separate backup file for archival.
+            </div>
+            <div class="sp-status" id="spSt">&#9679; Ready — Select company and date range to split</div>
+        </div>
+        <div class="sp-middle"></div>
+        <div class="sp-sidebar">
+            <a href="javascript:history.go(-1);" class="sb-btn"><span class="sb-key">Esc</span><span>Back</span></a>
+            <div class="sb-btn disabled"><span class="sb-key">F2</span></div><div class="sb-btn disabled"><span class="sb-key">F3</span></div><div class="sb-btn disabled"><span class="sb-key">F4</span></div><div class="sb-btn disabled"><span class="sb-key">F5</span></div><div class="sb-btn disabled"><span class="sb-key">F6</span></div><div class="sb-btn disabled"><span class="sb-key">F7</span></div><div class="sb-btn disabled"><span class="sb-key">F8</span></div><div class="sb-btn disabled"><span class="sb-key">F9</span></div><div class="sb-btn disabled"><span class="sb-key">F10</span></div>
+            <div style="flex:1;"></div>
+            <div class="sb-btn" onclick="spSplit()"><span class="sb-key">Enter</span><span>Split</span></div>
+        </div>
+    </div>
+    <div class="sp-footer"><a href="javascript:history.go(-1);"><span class="fk">Q:</span> Quit</a><a href="/home"><span class="fk">Esc:</span> Dashboard</a></div>
+</div>
+<script>
+function spSplit(){
+    var btn=document.getElementById('spBtn');btn.disabled=true;btn.textContent='Processing...';
+    document.getElementById('spSt').innerHTML='<span style="color:#F5B935;">&#9679; Splitting company data...</span>';
+    var fd=new FormData();fd.append('company',document.getElementById('spCompany').value);fd.append('from_date',document.getElementById('spFrom').value);fd.append('to_date',document.getElementById('spTo').value);
+    fetch('/feature/split-data',{method:'POST',body:fd,headers:{'X-CSRFToken':'{{ csrf_token }}'}}).then(function(r){return r.json();}).then(function(d){
+        btn.disabled=false;btn.textContent='Split Company Data';document.getElementById('spSt').innerHTML='&#9679; '+d.message;
+    }).catch(function(err){btn.disabled=false;btn.textContent='Split Company Data';document.getElementById('spSt').innerHTML='&#9679; '+err.message;});
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')history.go(-1);});
+</script>
+{% endblock %}

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tally Desktop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-sans/style.css">
+    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      /* Component-specific utilitarian loader */
+      .status-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      
+      .status-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 4px 8px;
+        background-color: transparent;
+      }
+      
+      .status-row.active {
+        background-color: var(--operator-amber);
+        color: var(--terminal-slate);
+        font-weight: 700;
+      }
+      
+      .stiff-progress {
+        height: 16px;
+        background-color: var(--terminal-slate);
+        border: 1px solid var(--structural-blue);
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .stiff-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 0%;
+        background-color: var(--operator-amber);
+        transition: width 0.05s linear; /* Ultra stiff/fast */
+      }
+      
+      .data-emphasized {
+        color: var(--terminal-slate);
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    
+    <!-- Top Utility Bar -->
+    <div class="top-bar">
+      <span>Tally Desktop &nbsp;<span class="monospace">v0.1.0</span></span>
+      <span style="margin-left: auto;" class="monospace">[DEV ENVIRONMENT]</span>
+    </div>
+
+    <!-- Main Canvas -->
+    <div class="main-canvas">
+      
+      <!-- Central Modality Panel -->
+      <div class="modal-panel">
+        <div class="modal-header">
+          SYSTEM INITIALIZATION
+        </div>
+        <div class="modal-content">
+          
+          <div class="status-grid monospace">
+             <div class="status-row active" id="step-local">
+                <span>LOCAL_SERVER</span>
+                <span id="step-local-status">STARTING</span>
+             </div>
+             <div class="status-row" id="step-connection">
+                <span>INTERFACE_CONNECTION</span>
+                <span id="step-connection-status">WAITING</span>
+             </div>
+          </div>
+
+          <div class="stiff-progress" style="margin-top: 8px;">
+            <div class="stiff-bar" id="progress-bar"></div>
+          </div>
+
+        </div>
+      </div>
+      
+    </div>
+
+    <!-- Bottom Status Bar -->
+    <div class="bottom-bar">
+      <span class="monospace">STATUS: <span id="global-status" class="data-emphasized">BOOTING</span></span>
+    </div>
+
+    <script>
+      const stepLocal = document.getElementById('step-local');
+      const stepLocalStatus = document.getElementById('step-local-status');
+      const stepConn = document.getElementById('step-connection');
+      const stepConnStatus = document.getElementById('step-connection-status');
+      const progressBar = document.getElementById('progress-bar');
+      const globalStatus = document.getElementById('global-status');
+      
+      let progress = 0;
+      
+      // Utilitarian stiff increment
+      const incrementInterval = setInterval(() => {
+        progress += 20;
+        if (progress > 80) progress = 80;
+        progressBar.style.width = progress + '%';
+      }, 200);
+
+      function checkBackend() {
+        fetch('http://127.0.0.1:8000/home')
+          .then(response => {
+            if (response.ok) {
+              clearInterval(incrementInterval);
+              progressBar.style.width = '100%';
+              
+              stepLocal.classList.remove('active');
+              stepLocalStatus.innerText = 'OK';
+              
+              stepConn.classList.add('active');
+              stepConnStatus.innerText = 'ESTABLISHED';
+              globalStatus.innerText = 'READY - REDIRECTING';
+              
+              // No smooth transitions. Just snap after a brief read-pause.
+              setTimeout(() => {
+                window.location.href = 'http://127.0.0.1:8000/home';
+              }, 400);
+            } else {
+              setTimeout(checkBackend, 1000);
+            }
+          })
+          .catch(() => {
+            // Simulated local initialization
+            setTimeout(checkBackend, 1000);
+          });
+      }
+
+      setTimeout(checkBackend, 1000);
+    </script>
+  </body>
+</html>

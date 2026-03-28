@@ -1,0 +1,441 @@
+{% extends 'base.html' %}
+{% block body %}
+{% load static %}
+<style>
+    * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+    }
+    html, body {
+        height: 100dvh;
+        background-color: #BCC3C8;
+        overflow: hidden;
+        font-family: 'Geist', sans-serif;
+    }
+
+    .company-creation-wrapper {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        background-color: #BCC3C8;
+    }
+
+    .screen-header {
+        background-color: #F8F9FA;
+        color: #172026;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 2px 12px;
+        font-size: 13px;
+        font-weight: 700;
+        border-bottom: 1px solid #2E5085;
+    }
+    .screen-header .close-btn {
+        cursor: pointer;
+        padding: 0 4px;
+        font-size: 16px;
+        color: #172026;
+        text-decoration: none;
+    }
+    .screen-header .close-btn:hover {
+        color: #F5B935;
+    }
+
+    .main-content {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+    }
+
+    .form-area {
+        background-color: #F8F9FA;
+        width: 65%;
+        border-right: 1px solid #2E5085;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+    }
+
+    .data-path-section {
+        display: flex;
+        padding: 8px 12px;
+        border-bottom: 1px solid #2E5085;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+    }
+    .data-path-label {
+        width: 130px;
+        color: #172026;
+    }
+    .colon {
+        padding: 0 8px;
+        color: #2E5085;
+    }
+    .data-path-value {
+        color: #172026;
+        font-weight: 700;
+    }
+
+    .form-body {
+        display: flex;
+        padding: 12px;
+        gap: 24px;
+    }
+
+    .form-col-left {
+        flex: 1;
+        max-width: 50%;
+    }
+    .form-col-right {
+        flex: 1;
+    }
+
+    .form-row {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 4px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+    }
+    .form-label {
+        width: 120px;
+        color: #172026;
+        padding-top: 4px;
+    }
+    .form-input-wrap {
+        flex: 1;
+        display: flex;
+    }
+    .form-input {
+        width: 100%;
+        background-color: transparent;
+        border: 1px solid transparent;
+        border-bottom: 1px solid #BCC3C8;
+        padding: 2px 4px;
+        color: #172026;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        outline: none;
+    }
+    .form-input:focus {
+        background-color: #FEFBEA;
+        border: 1px solid #F5B935;
+    }
+    textarea.form-input {
+        resize: none;
+        height: 60px;
+    }
+    select.form-input {
+        cursor: pointer;
+        background-color: #F8F9FA;
+        color: #172026;
+    }
+    select.form-input option {
+        background-color: #F8F9FA;
+        color: #172026;
+        padding: 4px 8px;
+    }
+    select.form-input option:hover,
+    select.form-input option:checked {
+        background-color: #F5B935;
+        color: #172026;
+    }
+
+    .form-spacer {
+        height: 16px;
+    }
+    .horizontal-divider {
+        border: none;
+        border-top: 1px dotted #BCC3C8;
+        margin: 12px 12px;
+    }
+
+    .currency-section {
+        padding: 0 12px 12px 12px;
+    }
+
+    .hidden-submit {
+        display: none;
+    }
+
+    .middle-grey {
+        flex: 1;
+        background-color: #BCC3C8;
+    }
+
+    .right-sidebar {
+        width: 160px;
+        background-color: #BCC3C8;
+        border-left: 1px solid #2E5085;
+        display: flex;
+        flex-direction: column;
+        padding: 4px;
+        gap: 4px;
+        overflow-y: auto;
+    }
+    .sidebar-btn {
+        background-color: #F8F9FA;
+        border: 1px solid #2E5085;
+        color: #172026;
+        font-family: 'Geist', sans-serif;
+        font-size: 11px;
+        text-align: left;
+        padding: 4px 8px;
+        cursor: pointer;
+        display: flex;
+    }
+    .sidebar-key {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 700;
+        color: #2E5085;
+        width: 32px;
+    }
+    .sidebar-btn:hover {
+        background-color: #F5B935;
+    }
+    .sidebar-btn.disabled {
+        color: #BCC3C8;
+        cursor: default;
+    }
+    .sidebar-btn.disabled .sidebar-key {
+        color: #BCC3C8;
+    }
+    .sidebar-btn.disabled:hover {
+        background-color: #F8F9FA;
+    }
+
+    .footer-bar {
+        background-color: #F8F9FA;
+        border-top: 1px solid #2E5085;
+        display: flex;
+        align-items: center;
+        padding: 2px 12px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        gap: 24px;
+        height: 24px;
+    }
+    .footer-item {
+        color: #172026;
+    }
+    .footer-key {
+        color: #2E5085;
+        font-weight: 700;
+    }
+
+    .company-select-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        padding: 8px 12px;
+        border-bottom: 1px solid #2E5085;
+    }
+    .company-select-label {
+        width: 130px;
+        color: #172026;
+        font-weight: 700;
+    }
+    .company-select-wrap {
+        flex: 1;
+    }
+</style>
+
+<div class="company-creation-wrapper">
+    <div class="screen-header">
+        <span>Company Alteration</span>
+        <a href="javascript:history.go(-1);" class="close-btn">&times;</a>
+    </div>
+
+    <div class="main-content">
+        <div class="form-area">
+            <div class="company-select-row">
+                <div class="company-select-label">Select Company</div>
+                <div class="colon">:</div>
+                <div class="company-select-wrap">
+                    <select class="form-input" id="companySelector" onchange="loadCompanyData()">
+                        <option value="">-- Select a Company --</option>
+                        {% for p in data %}
+                        <option value="{{ p.id }}">{{ p.componyname }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="data-path-section">
+                <div class="data-path-label">Company Data Path</div>
+                <div class="colon">:</div>
+                <div class="data-path-value">C:\Users\Public\TallyPrime\data</div>
+            </div>
+
+            <div id="companyFormArea" style="display:none;">
+                <div class="form-body">
+                    <div class="form-col-left">
+                        <div class="form-row">
+                            <div class="form-label">Company Name</div><div class="colon">:</div>
+                            <div class="form-input-wrap"><input type="text" id="field_componyname" class="form-input" readonly></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label">Mailing Name</div><div class="colon">:</div>
+                            <div class="form-input-wrap"><input type="text" id="field_mailingname" class="form-input" readonly></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label">Address</div><div class="colon">:</div>
+                            <div class="form-input-wrap"><textarea id="field_address" class="form-input" readonly></textarea></div>
+                        </div>
+
+                        <div class="form-spacer"></div>
+
+                        <div class="form-row">
+                            <div class="form-label">State</div><div class="colon">:</div>
+                            <div class="form-input-wrap"><input type="text" id="field_state" class="form-input" readonly></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label">Country</div><div class="colon">:</div>
+                            <div class="form-input-wrap"><input type="text" id="field_country" class="form-input" readonly></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label">Pincode</div><div class="colon">:</div>
+                            <div class="form-input-wrap"><input type="text" id="field_pincode" class="form-input" readonly></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label">Telephone</div><div class="colon">:</div>
+                            <div class="form-input-wrap"><input type="text" id="field_telphone" class="form-input" readonly></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label">Mobile</div><div class="colon">:</div>
+                            <div class="form-input-wrap"><input type="text" id="field_mobile" class="form-input" readonly></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label">Fax</div><div class="colon">:</div>
+                            <div class="form-input-wrap"><input type="text" id="field_fax" class="form-input" readonly></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label">E-mail</div><div class="colon">:</div>
+                            <div class="form-input-wrap"><input type="text" id="field_email" class="form-input" readonly></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label">Website</div><div class="colon">:</div>
+                            <div class="form-input-wrap"><input type="text" id="field_website" class="form-input" readonly></div>
+                        </div>
+                    </div>
+
+                    <div class="form-col-right">
+                        <div class="form-row">
+                            <div class="form-label" style="width:190px;">Financial year beginning from</div><div class="colon">:</div>
+                            <div class="form-input-wrap"><input type="text" id="field_fyearbgn" class="form-input" readonly></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label" style="width:190px;">Books beginning from</div><div class="colon">:</div>
+                            <div class="form-input-wrap"><input type="text" id="field_booksbgn" class="form-input" readonly></div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="horizontal-divider">
+
+                <div class="currency-section">
+                    <div class="form-row">
+                        <div class="form-label">Base Currency symbol</div><div class="colon">:</div>
+                        <div class="form-input-wrap"><input type="text" id="field_curncysymbl" class="form-input" style="width:80px;" readonly></div>
+                        <div style="flex:1;"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">Formal name</div><div class="colon">:</div>
+                        <div class="form-input-wrap"><input type="text" id="field_crncyname" class="form-input" style="width:160px;" readonly></div>
+                        <div style="flex:1;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="noCompanyMsg" style="padding: 24px 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #2E5085;">
+                Select a company above to view its details.
+            </div>
+        </div>
+
+        <div class="middle-grey"></div>
+
+        <div class="right-sidebar">
+            <div class="sidebar-btn"><span class="sidebar-key">F2</span><span>Date</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F3</span><span>Shut Company</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F4</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F5</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F6</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F7</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F8</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F9</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">F10</span></div>
+
+            <div style="flex:1;"></div>
+
+            <div class="sidebar-btn disabled"><span class="sidebar-key">R</span><span>Group Company</span></div>
+            <div class="sidebar-btn disabled"><span class="sidebar-key">A</span><span>Accept</span></div>
+            <div class="sidebar-btn"><span class="sidebar-key">F12</span><span>Configure</span></div>
+        </div>
+    </div>
+
+    <div class="footer-bar">
+        <a href="javascript:history.go(-1);" style="text-decoration:none;" class="footer-item"><span class="footer-key">Q:</span> Quit</a>
+    </div>
+</div>
+
+<script>
+    var companyData = {};
+    {% for p in data %}
+    companyData["{{ p.id }}"] = {
+        componyname: "{{ p.componyname|escapejs }}",
+        mailingname: "{{ p.mailingname|escapejs }}",
+        address: "{{ p.address|escapejs }}",
+        state: "{{ p.state|escapejs }}",
+        country: "{{ p.country|escapejs }}",
+        pincode: "{{ p.pincode|escapejs }}",
+        telphone: "{{ p.telphone|escapejs }}",
+        mobile: "{{ p.mobile|escapejs }}",
+        fax: "{{ p.fax|escapejs }}",
+        email: "{{ p.email|escapejs }}",
+        website: "{{ p.website|escapejs }}",
+        fyearbgn: "{{ p.fyearbgn|escapejs }}",
+        booksbgn: "{{ p.booksbgn|escapejs }}",
+        curncysymbl: "{{ p.curncysymbl|escapejs }}",
+        crncyname: "{{ p.crncyname|escapejs }}"
+    };
+    {% endfor %}
+
+    function loadCompanyData() {
+        var sel = document.getElementById('companySelector');
+        var id = sel.value;
+        if (id && companyData[id]) {
+            var d = companyData[id];
+            document.getElementById('field_componyname').value = d.componyname;
+            document.getElementById('field_mailingname').value = d.mailingname;
+            document.getElementById('field_address').value = d.address;
+            document.getElementById('field_state').value = d.state;
+            document.getElementById('field_country').value = d.country;
+            document.getElementById('field_pincode').value = d.pincode;
+            document.getElementById('field_telphone').value = d.telphone;
+            document.getElementById('field_mobile').value = d.mobile;
+            document.getElementById('field_fax').value = d.fax;
+            document.getElementById('field_email').value = d.email;
+            document.getElementById('field_website').value = d.website;
+            document.getElementById('field_fyearbgn').value = d.fyearbgn;
+            document.getElementById('field_booksbgn').value = d.booksbgn;
+            document.getElementById('field_curncysymbl').value = d.curncysymbl;
+            document.getElementById('field_crncyname').value = d.crncyname;
+            document.getElementById('companyFormArea').style.display = 'block';
+            document.getElementById('noCompanyMsg').style.display = 'none';
+        } else {
+            document.getElementById('companyFormArea').style.display = 'none';
+            document.getElementById('noCompanyMsg').style.display = 'block';
+        }
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            history.go(-1);
+        }
+    });
+</script>
+{% endblock %}
